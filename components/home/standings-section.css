@@ -1,0 +1,411 @@
+/* LR Events — podium cards with sculpted silhouette */
+.standings-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: 88px 100px;
+  background: var(--off-white, #fafaf8);
+}
+
+.standings-backdrop,
+.standings-shade {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 460px;
+  pointer-events: none;
+}
+
+.standings-backdrop {
+  z-index: -2;
+}
+
+.standings-backdrop img {
+  object-fit: cover;
+  object-position: center 58%;
+}
+
+.standings-shade {
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(18, 18, 18, 0.9) 0%,
+    rgba(18, 18, 18, 0.7) 56%,
+    rgba(18, 18, 18, 0.8) 100%
+  );
+}
+
+.standings-intro {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 36px;
+  color: #fff;
+}
+
+.standings-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 18px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.standings-intro h2 {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 560;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.standings-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease;
+}
+
+.standings-link svg {
+  transition: transform 0.2s ease;
+}
+
+.standings-link:hover {
+  border-color: #fff;
+}
+
+.standings-link:hover svg {
+  transform: translateX(4px);
+}
+
+.standings-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 5px;
+}
+
+.standings-podium {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 18px;
+  margin-top: 56px;
+}
+
+.standing-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 30px 26px 24px;
+  border: 1px solid #d9d9d4;
+  border-radius: 0 84px 0 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f7f4 100%);
+  box-shadow: 0 22px 38px rgba(24, 23, 23, 0.08);
+  color: #181717;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.standing-card::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(24, 23, 23, 0));
+  content: "";
+  pointer-events: none;
+}
+
+.standing-card:hover {
+  transform: translateY(-4px);
+  border-color: #bebeb8;
+  box-shadow: 0 26px 44px rgba(24, 23, 23, 0.11);
+}
+
+.standing-card--rank-1 {
+  margin-top: -14px;
+  border-color: #242322;
+  background: linear-gradient(180deg, #181717 0%, #101010 100%);
+  box-shadow: 0 26px 48px rgba(24, 23, 23, 0.18);
+  color: #fff;
+}
+
+.standing-card--rank-1::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+}
+
+.standing-card--rank-2 {
+  margin-top: 16px;
+}
+
+.standing-card--rank-3 {
+  margin-top: 30px;
+}
+
+.standing-card--rank-1:hover {
+  border-color: #242322;
+  box-shadow: 0 30px 54px rgba(24, 23, 23, 0.22);
+}
+
+.standing-rank {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(3.8rem, 6vw, 5.6rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.standing-card--rank-1 .standing-rank {
+  color: #e2b75f;
+}
+
+.standing-card--rank-2 .standing-rank,
+.standing-card--rank-3 .standing-rank {
+  color: #3a3939;
+}
+
+.standing-monogram {
+  position: absolute;
+  top: 26px;
+  right: 22px;
+  max-width: 62%;
+  overflow: hidden;
+  color: rgba(24, 23, 23, 0.05);
+  font-size: clamp(3.8rem, 6vw, 6rem);
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -0.065em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.standing-card--rank-1 .standing-monogram {
+  color: rgba(255, 255, 255, 0.075);
+}
+
+.standing-team {
+  display: flex;
+  min-height: 100px;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  padding-block: 22px 17px;
+  border-bottom: 1px solid #d7d7d2;
+}
+
+.standing-card--rank-1 .standing-team {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.standing-team h3 {
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(1.3rem, 1.85vw, 1.7rem);
+  font-weight: 620;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+
+.standing-points {
+  flex: none;
+  text-align: right;
+}
+
+.standing-points strong {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: 650;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.standing-points span {
+  display: block;
+  margin-top: 6px;
+  color: #696965;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.standing-card--rank-1 .standing-points span {
+  color: #c5c5c5;
+}
+
+.standing-rounds {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-bottom: 1px solid #d7d7d2;
+}
+
+.standing-card--rank-1 .standing-rounds {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.standing-rounds span {
+  min-width: 0;
+  padding: 15px 2px;
+  text-align: center;
+}
+
+.standing-rounds small {
+  display: block;
+  color: #696965;
+  font-size: 9px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.standing-card--rank-1 .standing-rounds small {
+  color: #c5c5c5;
+}
+
+.standing-rounds strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.standing-members {
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+}
+
+.standing-members li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 2px;
+  border-bottom: 1px solid #e9e9e5;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.standing-card--rank-1 .standing-members li {
+  border-color: rgba(255, 255, 255, 0.13);
+}
+
+.standing-members li::before {
+  flex: 0 0 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #810100;
+  content: "";
+}
+
+.standing-card--rank-1 .standing-members li::before {
+  background: #e2b75f;
+}
+
+.standings-note {
+  margin-top: 24px;
+  color: var(--muted, #5a5a58);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1050px) {
+  .standings-podium {
+    gap: 12px;
+  }
+
+  .standing-card {
+    padding-inline: 18px;
+    border-top-right-radius: 64px;
+  }
+
+  .standing-team {
+    align-items: start;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+  .standing-points {
+    text-align: left;
+  }
+}
+
+@media (max-width: 767px) {
+  .standings-section {
+    padding-block: 64px 72px;
+  }
+
+  .standings-backdrop,
+  .standings-shade {
+    height: 410px;
+  }
+
+  .standings-intro {
+    align-items: start;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .standings-intro h2 {
+    font-size: clamp(2.25rem, 10vw, 3.3rem);
+  }
+
+  .standings-podium {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 40px;
+  }
+
+  .standing-card,
+  .standing-card--rank-1,
+  .standing-card--rank-2,
+  .standing-card--rank-3 {
+    margin-top: 0;
+    border-top-right-radius: 44px;
+  }
+
+  .standing-card--rank-1 {
+    order: -1;
+  }
+
+  .standing-team {
+    min-height: 0;
+    align-items: end;
+    flex-direction: row;
+  }
+
+  .standing-points {
+    text-align: right;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .standing-card,
+  .standings-link,
+  .standings-link svg {
+    transition: none;
+  }
+
+  .standing-card:hover {
+    transform: none;
+  }
+
+  .standings-link:hover svg {
+    transform: none;
+  }
+}

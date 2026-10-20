@@ -193,10 +193,6 @@
     width: 100%;
   }
 }
-.home-hero {
-  width: calc(100% - 36px);
-  margin-inline: auto;
-}
 .hero-event-actions {
   display: flex;
   align-items: center;
@@ -221,10 +217,5 @@
   border-color: #fff;
   background: #fff;
   color: var(--noir);
-}
-@media (max-width: 767px) {
-  .home-hero {
-    width: calc(100% - 20px);
-  }
 }
 

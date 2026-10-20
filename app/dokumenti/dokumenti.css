@@ -1,0 +1,352 @@
+/* LR Events — clean, equal-weight document library */
+
+.documents-page {
+  padding-block: 28px 112px;
+  background: var(--off-white, #fafaf8);
+  color: var(--noir, #181717);
+}
+
+.documents-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 46px;
+  color: var(--muted, #5a5a58);
+  font-size: 12px;
+}
+
+.documents-breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: inherit;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.documents-breadcrumb a:hover {
+  color: var(--cherry, #810100);
+}
+
+.documents-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 430px);
+  align-items: end;
+  gap: 56px;
+  margin-bottom: 42px;
+}
+
+/* Brand eyebrow makes the heading hierarchy clear, without a second title. */
+.documents-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: #810100;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.documents-header h1 {
+  margin: 0;
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  font-weight: 540;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.documents-header p {
+  max-width: 46ch;
+  margin: 0 0 6px;
+  color: var(--muted, #5a5a58);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* One page heading is enough. A thin rule and file count introduce the grid. */
+.documents-library-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 32px;
+  padding-bottom: 12px;
+  position: relative;
+}
+
+/* Explicit full-width separator — visible even when border styles are overridden. */
+.documents-library-toolbar::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #810100;
+  content: "";
+  pointer-events: none;
+}
+
+.documents-count {
+  flex: none;
+  color: var(--muted, #5a5a58);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.document-item {
+  display: flex;
+  min-width: 0;
+}
+
+.document-card {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 276px;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 27px 30px 22px;
+  border: 1px solid var(--border, #e2e2df);
+  background: var(--surface, #ffffff);
+  color: var(--noir, #181717);
+  text-decoration: none;
+  transition: border-color 220ms ease, background-color 220ms ease;
+}
+
+/* Cherry rule enters from the left, retracts to the left on mouseout. */
+.document-card::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--cherry, #810100);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.document-card:hover {
+  border-color: #c9c9c4;
+  background: #fefefd;
+}
+
+.document-card:hover::after,
+.document-card:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.document-card-top,
+.document-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.document-number {
+  color: #92928e;
+  font-size: 13px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.document-format {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--cherry, #810100);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.document-content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 27px 0 28px;
+}
+
+.document-category {
+  margin-bottom: 11px;
+  color: var(--muted, #5a5a58);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.document-title {
+  max-width: 25ch;
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  font-weight: 590;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  transition: color 180ms ease;
+}
+
+.document-description {
+  display: block;
+  max-width: 52ch;
+  margin-top: 12px;
+  color: var(--muted, #5a5a58);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.document-card-bottom {
+  min-height: 44px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border, #e2e2df);
+}
+
+.document-priority,
+.document-meta {
+  color: var(--muted, #5a5a58);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.document-priority {
+  color: var(--cherry, #810100);
+  font-weight: 650;
+}
+
+.document-action {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  color: var(--noir, #181717);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 180ms ease;
+}
+
+.document-action svg {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.document-card:hover .document-title,
+.document-card:hover .document-action,
+.document-card:focus-visible .document-action {
+  color: var(--cherry, #810100);
+}
+
+.document-card:hover .document-action svg,
+.document-card:focus-visible .document-action svg {
+  transform: translate(3px, -3px);
+}
+
+.documents-empty {
+  display: flex;
+  min-height: 200px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--muted, #5a5a58);
+  text-align: center;
+}
+
+.documents-empty p {
+  margin: 0;
+}
+
+.documents-page a:focus-visible {
+  outline: 2px solid var(--cherry, #810100);
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .documents-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 34px;
+  }
+
+  .document-card {
+    padding-inline: 22px;
+  }
+}
+
+@media (max-width: 680px) {
+  .documents-page {
+    padding-block: 22px 72px;
+  }
+
+  .documents-breadcrumb {
+    margin-bottom: 30px;
+  }
+
+  .documents-header {
+    margin-bottom: 30px;
+  }
+
+  .documents-header p {
+    font-size: 15px;
+  }
+
+  .documents-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .document-card {
+    min-height: 234px;
+    padding: 22px 21px 18px;
+  }
+
+  .document-content {
+    padding-block: 24px;
+  }
+
+  .document-title {
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .documents-count {
+    font-size: 10px;
+  }
+
+  .document-priority,
+  .document-meta {
+    font-size: 10px;
+  }
+
+  .document-action {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .documents-page *,
+  .documents-page *::after {
+    transition: none !important;
+  }
+}

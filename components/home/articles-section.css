@@ -5,13 +5,23 @@
 }
 
 .articles-heading {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
   padding-bottom: 22px;
   margin-bottom: 0; /* The feature card must physically touch the red rule. */
-  border-bottom: 1px solid var(--cherry, #a51f3c);
+}
+
+.articles-heading::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: clamp(24px, 8.5vw, 122px);
+  height: 1px;
+  background: var(--cherry, #a51f3c);
+  content: "";
 }
 
 .articles-heading h2 {
@@ -245,6 +255,7 @@
 }
 
 @media (max-width: 900px) {
+  .articles-heading::after { left: 28px; }
   .featured-article-card { margin-left: 28px; }
   .article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -252,6 +263,7 @@
 @media (max-width: 767px) {
   .articles-section { padding-block: 56px 76px; }
   .articles-heading { gap: 12px; padding-bottom: 16px; }
+  .articles-heading::after { left: 16px; }
   .articles-heading h2 { font-size: clamp(2.1rem, 8vw, 2.8rem); }
   .articles-view-all { gap: 6px; font-size: 9px; letter-spacing: .02em; }
   .articles-view-all svg { width: 15px; }
