@@ -1,0 +1,61 @@
+.footer-sponsors {
+  border-block: 1px solid #343232;
+  padding: 56px 20px 64px;
+}
+.sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 28px 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sponsor-placeholder {
+  min-height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  color: #c5c5c5;
+  border: 1px dashed #48413f;
+  text-align: center;
+  padding: 12px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.sponsor-placeholder-caption {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #999;
+}
+@media (max-width: 1023px) {
+  .sponsor-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .footer-sponsors {
+    padding: 32px 0;
+  }
+  .sponsor-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 12px;
+  }
+  .sponsor-placeholder {
+    font-size: 10px;
+    padding-inline: 4px;
+  }
+  .sponsor-placeholder-caption {
+    font-size: 8px;
+  }
+}
+@media (max-width: 359px) {
+  .sponsor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+

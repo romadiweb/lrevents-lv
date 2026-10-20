@@ -3,6 +3,7 @@ import Link from "next/link";
 import * as Nav from "@radix-ui/react-navigation-menu";
 import { ChevronDown } from "lucide-react";
 import { navigation } from "@/lib/navigation";
+import "./desktop-navigation.css";
 export function DesktopNavigation() {
   return (
     <Nav.Root

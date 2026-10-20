@@ -3,6 +3,7 @@ import { Brand } from "./brand";
 import { SponsorGrid } from "./sponsor-grid";
 import Image from "next/image";
 import { CookieSettings } from "./cookie-settings";
+import "./site-footer.css";
 
 export function SiteFooter() {
   return (

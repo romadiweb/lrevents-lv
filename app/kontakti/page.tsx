@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { associationDetails } from "@/lib/contacts";
 import { TeamGrid } from "@/components/contact/team-grid";
+import "./kontakti.css";
 
 export const metadata: Metadata = {
   title: "Kontakti — LR Events",

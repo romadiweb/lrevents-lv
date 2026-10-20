@@ -1,3 +1,5 @@
+import "./social-links.css";
+
 const socialLinks = [
   {
     name: "Facebook",

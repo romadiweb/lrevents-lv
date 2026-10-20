@@ -1,3 +1,5 @@
+import "./sponsor-grid.css";
+
 const sponsorSlots = Array.from({ length: 12 }, (_, index) => ({
   id: `sponsor-${index + 1}`,
   label: `Atbalstītājs ${String(index + 1).padStart(2, "0")}`,

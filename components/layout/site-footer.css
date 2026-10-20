@@ -1,0 +1,146 @@
+.site-footer {
+  background: var(--noir);
+  color: var(--surface);
+  padding-block: 36px 28px;
+}
+.footer-inner {
+  border-top: 2px solid var(--cherry);
+  padding-top: 80px;
+}
+.footer-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+  text-align: center;
+}
+.footer-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 24px;
+}
+.site-footer .brand-image {
+  width: 156px;
+  height: 88px;
+}
+.site-footer .brand-image img {
+  width: 156px;
+  height: 156px;
+  top: -34px;
+  filter: invert(1);
+}
+.site-footer .brand-caption {
+  display: none;
+}
+.footer-partner-placeholder {
+  border-left: 1px solid #777;
+  padding: 12px 0 12px 40px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #c5c5c5;
+  font-size: 13px;
+}
+.footer-contact {
+  font-style: normal;
+  font-size: 13px;
+}
+.footer-contact-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: opacity 220ms ease;
+}
+.footer-contact-links a:hover {
+  opacity: 0.7;
+}
+.footer-contact p {
+  margin: 4px 0 0;
+  color: #c5c5c5;
+  line-height: 1.6;
+}
+.footer-copyright {
+  color: #999;
+  font-size: 10px;
+  margin: 20px 0 0;
+}
+.site-footer :focus-visible {
+  outline-color: var(--surface);
+}
+@media (max-width: 767px) {
+  .site-footer {
+    padding-block: 24px;
+  }
+  .footer-inner {
+    padding-top: 40px;
+  }
+  .footer-brand-row {
+    gap: 24px;
+  }
+  .site-footer .brand-image {
+    width: 120px;
+    height: 68px;
+  }
+  .site-footer .brand-image img {
+    width: 120px;
+    height: 120px;
+    top: -26px;
+  }
+  .footer-partner-placeholder {
+    padding-left: 24px;
+    font-size: 11px;
+  }
+  .footer-contact-links {
+    gap: 0 16px;
+  }
+  .footer-identity {
+    padding-top: 32px;
+  }
+}
+@media (max-width: 359px) {
+  .footer-brand-row {
+    gap: 16px;
+  }
+  .footer-partner-placeholder {
+    padding-left: 16px;
+  }
+}
+.footer-bottom {
+  border-top: 1px solid #343232;
+  margin-top: 40px;
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.romadi-signature {
+  width: 164px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+@media (max-width: 479px) {
+  .footer-bottom {
+    gap: 16px;
+  }
+  .romadi-signature {
+    width: 122px;
+  }
+}
+

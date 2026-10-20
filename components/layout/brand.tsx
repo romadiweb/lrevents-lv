@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import "./brand.css";
 export function Brand() {
   return (
     <Link className="brand" href="/" aria-label="LR Events — sākums">

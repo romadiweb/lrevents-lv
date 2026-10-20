@@ -6,6 +6,7 @@ import { SocialLinks } from "./social-links";
 import { Brand } from "./brand";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
+import "./site-header.css";
 export function SiteHeader() {
   const [compact, setCompact] = useState(false);
   useEffect(() => {

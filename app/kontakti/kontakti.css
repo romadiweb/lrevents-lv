@@ -1,0 +1,172 @@
+.contact-page {
+  padding-block: 32px 112px;
+}
+.contact-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+.contact-breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  transition: color 220ms ease;
+}
+.contact-breadcrumb a:hover {
+  color: var(--cherry);
+}
+.contact-page h1 {
+  font-size: clamp(44px, 5vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 56px;
+}
+.contact-page h2 {
+  font-size: 25px;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+}
+.contact-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+}
+.contact-details dl {
+  margin: 0;
+}
+.contact-details dl > div {
+  display: grid;
+  grid-template-columns: 165px minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.contact-details dt {
+  color: var(--muted);
+}
+.contact-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.contact-introduction p {
+  max-width: 40ch;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+.contact-main-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+  font-size: 17px;
+  border-bottom: 1px solid var(--cherry);
+  transition: color 220ms ease;
+}
+.contact-main-email:hover {
+  color: var(--cherry);
+}
+.contact-team {
+  margin-top: 80px;
+}
+.contact-team > h2 {
+  border-bottom: 1px solid var(--cherry);
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+.contact-team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px 28px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.contact-avatar {
+  aspect-ratio: 1 / 1.05;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-subtle);
+  color: #a4a4a0;
+  margin-bottom: 20px;
+}
+.contact-person h3 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 6px;
+}
+.contact-person p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 8px;
+  max-width: 34ch;
+}
+.contact-person a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 36px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  transition: color 220ms ease;
+}
+.contact-person a:hover {
+  color: var(--cherry);
+}
+@media (max-width: 1023px) {
+  .contact-overview {
+    gap: 40px;
+  }
+  .contact-details dl > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .contact-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 639px) {
+  .contact-page {
+    padding-block: 24px 64px;
+  }
+  .contact-breadcrumb {
+    margin-bottom: 28px;
+  }
+  .contact-page h1 {
+    margin-bottom: 40px;
+  }
+  .contact-page h2 {
+    font-size: 23px;
+    margin-bottom: 20px;
+  }
+  .contact-overview {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .contact-team {
+    margin-top: 56px;
+  }
+  .contact-team-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .contact-avatar {
+    aspect-ratio: 1.15 / 1;
+  }
+  .contact-main-email {
+    font-size: 16px;
+  }
+}
+

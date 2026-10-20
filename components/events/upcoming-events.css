@@ -1,0 +1,256 @@
+.upcoming-section {
+  padding-block: 104px 64px;
+  background: var(--off-white, #faf9f7);
+}
+
+.upcoming-heading {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 420px);
+  align-items: end;
+  gap: 48px;
+  margin-bottom: 38px;
+}
+
+.upcoming-heading h2 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4.5vw, 4.25rem);
+  font-weight: 540;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.upcoming-heading p {
+  margin: 0 0 5px;
+  color: var(--muted, #777);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.event-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.event-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  height: 156px;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--noir, #171717);
+  color: #fff;
+  text-decoration: none;
+  isolation: isolate;
+  cursor: pointer;
+}
+
+/* The line grows from the left and retracts to the left on exit. */
+.event-card::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--cherry, #a3213c);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.event-card:hover::after,
+.event-card:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.event-card:focus-visible {
+  outline: 2px solid var(--cherry, #a3213c);
+  outline-offset: 3px;
+}
+
+.event-card-date {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 18px 15px;
+  background: var(--cherry, #a3213c);
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+.event-card-day {
+  font-size: clamp(2.1rem, 3vw, 2.65rem);
+  font-weight: 750;
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+
+.event-card-month {
+  margin-top: 7px;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.event-card-year {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.82;
+}
+
+.event-card-city {
+  max-width: 100%;
+  margin-top: 15px;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.event-card-media {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.event-card-image {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.event-card-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(13 15 20 / 82%) 0%, rgb(13 15 20 / 54%) 60%, rgb(13 15 20 / 56%) 100%);
+  transition: opacity 400ms ease;
+}
+
+.event-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  padding: 22px 48px 22px 24px;
+}
+
+.event-card-content > p {
+  margin: 0 0 9px;
+  color: rgb(255 255 255 / 75%);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.event-card-content h3 {
+  max-width: 20ch;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.25rem, 2vw, 1.85rem);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.event-card-arrow {
+  position: absolute;
+  z-index: 2;
+  right: 18px;
+  bottom: 18px;
+  color: #fff;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), color 300ms ease;
+}
+
+.event-card:hover .event-card-image,
+.event-card:focus-visible .event-card-image {
+  transform: scale(1.055);
+}
+
+.event-card:hover .event-card-shade,
+.event-card:focus-visible .event-card-shade {
+  opacity: 0.83;
+}
+
+.event-card:hover .event-card-arrow,
+.event-card:focus-visible .event-card-arrow {
+  transform: translateX(5px);
+}
+
+@media (max-width: 900px) {
+  .event-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .upcoming-section {
+    padding-block: 64px 44px;
+  }
+
+  .upcoming-heading {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .upcoming-heading h2 {
+    font-size: 2.6rem;
+  }
+
+  .event-card {
+    grid-template-columns: 82px minmax(0, 1fr);
+    height: 140px;
+  }
+
+  .event-card-date {
+    padding: 15px 11px;
+  }
+
+  .event-card-day {
+    font-size: 2.1rem;
+  }
+
+  .event-card-city {
+    font-size: 9px;
+    margin-top: 12px;
+  }
+
+  .event-card-content {
+    padding: 16px 38px 16px 17px;
+  }
+
+  .event-card-content h3 {
+    font-size: clamp(1.15rem, 4.5vw, 1.5rem);
+  }
+
+  .event-card-arrow {
+    right: 13px;
+    bottom: 13px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-card::after,
+  .event-card-image,
+  .event-card-shade,
+  .event-card-arrow {
+    transition-duration: 0.01ms;
+  }
+}

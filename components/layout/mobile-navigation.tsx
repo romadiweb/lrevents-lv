@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { navigation } from "@/lib/navigation";
 import { SocialLinks } from "./social-links";
+import "./mobile-navigation.css";
 export function MobileNavigation() {
   const [open, setOpen] = useState(false);
   return (
