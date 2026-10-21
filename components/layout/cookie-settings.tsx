@@ -9,7 +9,7 @@ export function CookieSettings() {
     <Dialog.Root>
       <Dialog.Trigger className="cookie-settings-trigger">Sīkdatņu iestatījumi</Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="menu-overlay" />
+        <Dialog.Overlay className="menu-overlay cookie-settings-overlay" />
         <Dialog.Content className="cookie-dialog">
           <Dialog.Title>Sīkdatņu iestatījumi</Dialog.Title>
           <Dialog.Description>Šobrīd šajā vietnē nav ieslēgtas analītikas vai reklāmas sīkdatnes.</Dialog.Description>

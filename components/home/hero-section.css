@@ -1,6 +1,6 @@
 .home-hero {
   position: relative;
-  min-height: min(720px, calc(100svh - var(--utility-height) - var(--header-height)));
+  min-height: min(640px, calc(100svh - var(--utility-height) - var(--header-height) - 96px));
   overflow: hidden;
   isolation: isolate;
   background: var(--noir);
@@ -26,7 +26,7 @@
   grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.75fr);
   align-items: end;
   gap: clamp(56px, 8vw, 132px);
-  padding-block: clamp(88px, 12vh, 150px) 74px;
+  padding-block: clamp(40px, 7vh, 88px) 48px;
 }
 .hero-introduction {
   max-width: 700px;
@@ -154,21 +154,21 @@
     background: linear-gradient(0deg, rgb(10 9 9 / 95%) 0%, rgb(10 9 9 / 67%) 68%, rgb(10 9 9 / 45%) 100%);
   }
   .home-hero-grid {
-    min-height: 790px;
-    gap: 44px;
-    padding-block: 74px 48px;
+    min-height: calc(100svh - var(--utility-height) - var(--header-height) - 80px);
+    gap: 24px;
+    padding-block: 24px;
   }
   .hero-introduction h1 {
-    max-width: 9ch;
-    margin-bottom: 22px;
-    font-size: clamp(2.75rem, 13vw, 4rem);
+    max-width: 12ch;
+    margin-bottom: 16px;
+    font-size: clamp(2.25rem, 10vw, 3rem);
   }
   .hero-introduction p {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     font-size: 15px;
   }
   .next-event-panel {
-    padding: 24px 0 0;
+    padding: 16px 0 0;
     border-top: 1px solid rgb(255 255 255 / 42%);
     border-left: 0;
   }
@@ -176,7 +176,7 @@
     font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
   .next-event-meta {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
   .countdown-unit {
     padding-inline: 10px;

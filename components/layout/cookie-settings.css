@@ -18,12 +18,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 80;
+  z-index: 100;
   width: min(480px, calc(100% - 40px));
   background: var(--surface);
   color: var(--noir);
   padding: 32px;
   border-radius: 4px;
+}
+.menu-overlay.cookie-settings-overlay {
+  z-index: 90;
 }
 .cookie-dialog h2 {
   font-size: 22px;

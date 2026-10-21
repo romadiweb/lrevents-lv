@@ -1,9 +1,6 @@
 import "./sponsor-grid.css";
-
-const sponsorSlots = Array.from({ length: 12 }, (_, index) => ({
-  id: `sponsor-${index + 1}`,
-  label: `Atbalstītājs ${String(index + 1).padStart(2, "0")}`,
-}));
+import { sponsors } from "@/lib/sponsors";
+import { SponsorMark } from "./sponsor-mark";
 
 export function SponsorGrid() {
   return (
@@ -12,10 +9,9 @@ export function SponsorGrid() {
       aria-label="Atbalstītāju logotipu vietas"
     >
       <ul className="sponsor-grid">
-        {sponsorSlots.map(({ id, label }) => (
-          <li className="sponsor-placeholder" key={id}>
-            <span>{label}</span>
-            <span className="sponsor-placeholder-caption">Logotipa vieta</span>
+        {sponsors.map((sponsor) => (
+          <li className="sponsor-placeholder" key={sponsor.id}>
+            <SponsorMark sponsor={sponsor} />
           </li>
         ))}
       </ul>
