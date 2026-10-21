@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { associationDetails } from "@/lib/contacts";
+import { getContactContent } from "@/lib/contact-content";
 import { TeamGrid } from "@/components/contact/team-grid";
 import "./kontakti.css";
 
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default function ContactsPage() {
+  return <Suspense fallback={<main id="main-content" className="contact-page container" aria-busy="true"><h1>Kontakti</h1><p role="status">Ielādē kontaktinformāciju…</p></main>}><ContactContentPage /></Suspense>;
+}
+
+async function ContactContentPage() {
+  const { associationName, associationDetails, introduction, email, team } = await getContactContent();
   return (
     <main id="main-content" className="contact-page container">
       <nav className="contact-breadcrumb" aria-label="Atrašanās vieta">
@@ -25,7 +31,7 @@ export default function ContactsPage() {
           className="contact-details"
           aria-labelledby="association-heading"
         >
-          <h2 id="association-heading">Biedrība “LR Events”</h2>
+          <h2 id="association-heading">{associationName}</h2>
           <dl>
             {associationDetails.map(({ label, value }) => (
               <div key={label}>
@@ -40,21 +46,19 @@ export default function ContactsPage() {
           aria-labelledby="contact-heading"
         >
           <h2 id="contact-heading">Sazinies ar mums</h2>
-          <p>
-            Ja tev ir jautājumi vai idejas sadarbībai — droši sazinies ar mums!
-          </p>
+          <p>{introduction}</p>
           <a
             className="contact-main-email"
-            href="mailto:kasparsbite@lrevents.lv"
+            href={`mailto:${email}`}
           >
-            kasparsbite@lrevents.lv
+            {email}
             <ArrowUpRight size={20} aria-hidden="true" />
           </a>
         </section>
       </div>
       <section className="contact-team" aria-labelledby="team-heading">
         <h2 id="team-heading">Mūsu komanda</h2>
-        <TeamGrid />
+        <TeamGrid team={team} />
       </section>
     </main>
   );

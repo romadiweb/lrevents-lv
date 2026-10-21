@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { navigation } from "@/lib/navigation";
+import { navigation, registrationLink } from "@/lib/navigation";
 import { SocialLinks } from "./social-links";
 import "./mobile-navigation.css";
 export function MobileNavigation() {
@@ -26,10 +26,10 @@ export function MobileNavigation() {
             <ul className="mobile-links">
               {navigation.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} onClick={() => setOpen(false)}>
+                  {item.href ? <Link href={item.href} onClick={() => setOpen(false)}>
                     {item.label}
                     <ArrowUpRight size={20} aria-hidden="true" />
-                  </Link>
+                  </Link> : <span className="mobile-category">{item.label}</span>}
                   {item.children && (
                     <ul>
                       {item.children.map((child) => (
@@ -51,8 +51,8 @@ export function MobileNavigation() {
               <SocialLinks />
             </div>
           </nav>
-          <Link className="primary-button" href="/dalibniekiem">
-            Reģistrācija
+          <Link className="primary-button" href={registrationLink.href}>
+            {registrationLink.label}
             <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </Dialog.Content>

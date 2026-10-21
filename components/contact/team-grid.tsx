@@ -1,7 +1,7 @@
 import { UserRound, ArrowUpRight } from "lucide-react";
-import { team } from "@/lib/contacts";
+import type { ContactContent } from "@/lib/contact-content";
 
-export function TeamGrid() {
+export function TeamGrid({ team }: { team: ContactContent["team"] }) {
   return (
     <ul className="contact-team-grid">
       {team.map(({ name, role, email }) => (

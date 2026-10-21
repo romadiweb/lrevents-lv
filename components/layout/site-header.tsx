@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { registrationLink } from "@/lib/navigation";
 import { SocialLinks } from "./social-links";
 import { Brand } from "./brand";
 import { DesktopNavigation } from "./desktop-navigation";
@@ -36,9 +37,9 @@ export function SiteHeader() {
                 <DesktopNavigation />
                 <Link
                   className="primary-button header-cta"
-                  href="/dalibniekiem"
+                  href={registrationLink.href}
                 >
-                  Reģistrācija
+                  {registrationLink.label}
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>
                 <MobileNavigation />

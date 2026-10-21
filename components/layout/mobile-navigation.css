@@ -86,3 +86,5 @@
   color: var(--surface);
 }
 
+
+.mobile-category { display: flex; align-items: center; min-height: 44px; font-size: 22px; font-weight: 500; }

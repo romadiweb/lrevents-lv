@@ -1,37 +1,32 @@
 export type NavLink = { label: string; href: string };
-export type NavItem = NavLink & { children?: NavLink[] };
-export const navigation: NavItem[] = [
-  { label: "Pasākumi", href: "/pasakumi" },
-  {
-    label: "Rezultāti",
-    href: "/rezultati",
-    children: [
-      {
-        label: "Sacensību rezultāti",
-        href: "/rezultati",
-      },
-      { label: "Kopvērtējums", href: "/rezultati#kopvertejums" },
-    ],
-  },
-  {
-    label: "Dalībniekiem",
-    href: "/dalibniekiem",
-    children: [
-      {
-        label: "Reģistrācija un dalībnieki",
-        href: "/dalibniekiem",
-      },
-      { label: "Nolikumi un dokumenti", href: "/dokumenti" },
-      { label: "Tiesnešiem", href: "/tiesnesiem" },
-    ],
-  },
-  { label: "Skatītājiem", href: "/skatitajiem" },
-  { label: "Par mums", href: "/par-mums" },
-  { label: "Kontakti", href: "/kontakti" },
-];
-export const utilityLinks: NavLink[] = [
-  { label: "WhatsApp kopiena", href: "/kopiena" },
-  { label: "Kļūsti par biedru", href: "/biedriem" },
-  { label: "Kontakti", href: "/kontakti" },
-];
+export type NavItem =
+  | (NavLink & { children?: never })
+  | { label: string; href?: string; children: NavLink[] };
 
+export const navigation: NavItem[] = [
+  { label: "Pasākumi", href: "/pasakumi", children: [
+    { label: "Pasākumu kalendārs", href: "/pasakumi" },
+    { label: "Iepriekšējie pasākumi", href: "/pasakumi/arhivs" },
+  ] },
+  { label: "Rezultāti", href: "/rezultati", children: [
+    { label: "Posmu rezultāti", href: "/rezultati" },
+    { label: "Kopvērtējums", href: "/rezultati/kopvertejums" },
+    { label: "Rezultātu arhīvs", href: "/rezultati/arhivs" },
+    { label: "Tiešsaistes rezultāti", href: "/rezultati/live" },
+  ] },
+  { label: "Informācija", children: [
+    { label: "Dalībniekiem", href: "/dalibniekiem" },
+    { label: "Skatītājiem", href: "/skatitajiem" },
+    { label: "Tiesnešiem", href: "/tiesnesiem" },
+    { label: "Dokumenti", href: "/dokumenti" },
+  ] },
+  { label: "Raksti", href: "/raksti" },
+  { label: "Par mums", href: "/par-mums", children: [
+    { label: "Par LR Events", href: "/par-mums" },
+    { label: "Kļūsti par biedru", href: "/biedrs" },
+    { label: "Pasākumu organizēšana", href: "/organizet-pasakumu" },
+    { label: "Partneriem", href: "/partneriem" },
+  ] },
+  { label: "Kontakti", href: "/kontakti" },
+];
+export const registrationLink: NavLink = { label: "Reģistrēties", href: "/dalibniekiem" };
