@@ -1,0 +1,522 @@
+/* LR Events / Skatītājiem — practical spectator information.
+   Set a rights-cleared trackside photograph at:
+   public/images/spectators/trackside.jpg
+   The image panel has a deliberate dark fallback until the asset is provided.
+*/
+
+.spectators-page {
+  --spectators-background: #fafaf8;
+  --spectators-surface: #ffffff;
+  --spectators-ink: #181717;
+  --spectators-muted: #5a5a58;
+  --spectators-red: #810100;
+  --spectators-maroon: #630000;
+  --spectators-rule: #e2e2df;
+  --spectators-champagne: #b5ac8a;
+  color: var(--spectators-ink);
+  padding-block: 32px 112px;
+}
+
+.spectators-page *,
+.spectators-page *::before,
+.spectators-page *::after {
+  box-sizing: border-box;
+}
+
+.spectators-page h1,
+.spectators-page h2,
+.spectators-page p,
+.spectators-page dl,
+.spectators-page dd,
+.spectators-page ul {
+  margin: 0;
+}
+
+.spectators-page a {
+  text-decoration: none;
+}
+
+.spectators-page a:focus-visible {
+  outline: 2px solid var(--spectators-red);
+  outline-offset: 5px;
+}
+
+/* Match the Kontakti page heading and breadcrumb system. */
+.spectators-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+  color: var(--spectators-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.spectators-breadcrumb a {
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  transition: color 220ms ease;
+}
+
+.spectators-breadcrumb a:hover {
+  color: var(--spectators-red);
+}
+
+.spectators-breadcrumb svg {
+  color: #999994;
+}
+
+.spectators-header {
+  margin-bottom: 50px;
+}
+
+.spectators-header h1 {
+  font-size: clamp(44px, 5vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 22px;
+}
+
+.spectators-header p {
+  max-width: 750px;
+  color: var(--spectators-muted);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* One image, one useful instruction. Not a promotional hero. */
+.spectators-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.85fr);
+  min-height: 350px;
+  background: var(--spectators-ink);
+}
+
+.spectators-feature-photo {
+  min-width: 0;
+  min-height: 350px;
+  background-color: #343332;
+  background-image:
+    linear-gradient(90deg, rgb(24 23 23 / 4%), rgb(24 23 23 / 23%)),
+    url('/images/spectators/trackside.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.spectators-feature-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  padding: clamp(28px, 3.5vw, 48px);
+  color: #ffffff;
+}
+
+.spectators-feature-panel > svg {
+  color: var(--spectators-champagne);
+}
+
+.spectators-feature-panel h2 {
+  font-size: clamp(25px, 2.5vw, 34px);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+  margin-bottom: 15px;
+}
+
+.spectators-feature-panel p {
+  max-width: 35ch;
+  color: #d0d0cf;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.spectators-feature-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--spectators-champagne);
+  padding-bottom: 9px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+  transition: color 200ms ease, gap 200ms ease;
+}
+
+.spectators-feature-link:hover {
+  color: var(--spectators-champagne);
+  gap: 25px;
+}
+
+/* Structured information, not floating feature cards. */
+.spectators-section {
+  margin-top: clamp(72px, 7vw, 104px);
+}
+
+.spectators-section-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  align-items: start;
+  gap: 44px;
+  margin-bottom: 34px;
+}
+
+.spectators-section-intro h2,
+.spectators-resources h2 {
+  font-size: clamp(30px, 3.2vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.14;
+}
+
+.spectators-section-intro p {
+  max-width: 550px;
+  color: var(--spectators-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.spectators-visit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(30px, 5vw, 84px);
+  row-gap: 0;
+}
+
+.spectators-visit-item {
+  border-top: 1px solid var(--spectators-rule);
+  padding-block: 24px 32px;
+}
+
+.spectators-visit-item dt {
+  margin-bottom: 10px;
+  font-size: 21px;
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+.spectators-visit-item dd {
+  max-width: 57ch;
+  color: var(--spectators-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Safety is visually prominent because the information matters. */
+.spectators-safety {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(36px, 6vw, 90px);
+  margin-top: clamp(52px, 6vw, 80px);
+  padding: clamp(38px, 5vw, 72px);
+  background: var(--spectators-ink);
+  color: #fff;
+}
+
+.spectators-safety h2 {
+  max-width: 13ch;
+  font-size: clamp(32px, 3.5vw, 49px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+  margin-bottom: 22px;
+}
+
+.spectators-safety-intro p {
+  max-width: 42ch;
+  color: #c5c5c3;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.spectators-safety-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  align-content: start;
+}
+
+.spectators-safety-list li {
+  position: relative;
+  padding: 17px 0 17px 24px;
+  border-bottom: 1px solid rgb(255 255 255 / 19%);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.spectators-safety-list li:first-child {
+  padding-top: 0;
+}
+
+.spectators-safety-list li:first-child::before {
+  top: 9px;
+}
+
+.spectators-safety-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.spectators-safety-list li::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 27px;
+  width: 6px;
+  height: 6px;
+  background: var(--spectators-champagne);
+}
+
+/* Updates are guidance, not a fake live alert. */
+.spectators-updates {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: start;
+  padding: 26px 0;
+  border-top: 1px solid var(--spectators-rule);
+  border-bottom: 1px solid var(--spectators-rule);
+}
+
+.spectators-updates-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: var(--spectators-red);
+}
+
+.spectators-updates-copy h2 {
+  font-size: 22px;
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.spectators-updates-copy p {
+  max-width: 72ch;
+  color: var(--spectators-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.spectators-updates-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 44px;
+  color: var(--spectators-ink);
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  transition: color 200ms ease;
+}
+
+.spectators-updates-link:hover {
+  color: var(--spectators-red);
+}
+
+.spectators-resources {
+  margin-top: 75px;
+}
+
+.spectators-resources-intro {
+  margin-bottom: 30px;
+}
+
+.spectators-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(28px, 5vw, 80px);
+}
+
+.spectators-resource-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'title arrow' 'detail arrow';
+  column-gap: 20px;
+  align-items: center;
+  padding: 23px 0;
+  border-top: 1px solid var(--spectators-rule);
+  color: var(--spectators-ink);
+}
+
+.spectators-resource-title {
+  grid-area: title;
+  margin-bottom: 6px;
+  font-size: 20px;
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  transition: color 200ms ease;
+}
+
+.spectators-resource-detail {
+  grid-area: detail;
+  color: var(--spectators-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.spectators-resource-arrow {
+  grid-area: arrow;
+  color: var(--spectators-muted);
+  transition: color 200ms ease, transform 200ms ease;
+}
+
+.spectators-resource-link:hover .spectators-resource-title,
+.spectators-resource-link:hover .spectators-resource-arrow {
+  color: var(--spectators-red);
+}
+
+.spectators-resource-link:hover .spectators-resource-arrow {
+  transform: translate(3px, -3px);
+}
+
+.spectators-contact-note {
+  margin-top: 23px !important;
+  color: var(--spectators-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.spectators-contact-note a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--spectators-ink);
+  font-weight: 650;
+  border-bottom: 1px solid var(--spectators-red);
+  transition: color 200ms ease;
+}
+
+.spectators-contact-note a:hover {
+  color: var(--spectators-red);
+}
+
+@media (max-width: 1023px) {
+  .spectators-feature {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
+  }
+
+  .spectators-safety {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .spectators-page {
+    padding-block: 24px 72px;
+  }
+
+  .spectators-breadcrumb {
+    margin-bottom: 28px;
+  }
+
+  .spectators-header {
+    margin-bottom: 32px;
+  }
+
+  .spectators-header p {
+    font-size: 16px;
+  }
+
+  .spectators-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .spectators-feature-photo {
+    min-height: 270px;
+  }
+
+  .spectators-feature-panel {
+    min-height: 260px;
+    padding: 28px;
+  }
+
+  .spectators-section {
+    margin-top: 62px;
+  }
+
+  .spectators-section-intro {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .spectators-visit-grid {
+    column-gap: 30px;
+  }
+
+  .spectators-safety {
+    margin-top: 44px;
+    grid-template-columns: 1fr;
+    padding: 32px 28px;
+    gap: 26px;
+  }
+
+  .spectators-safety h2 {
+    max-width: none;
+  }
+
+  .spectators-updates {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .spectators-updates-link {
+    grid-column: 2;
+  }
+
+  .spectators-resources {
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 580px) {
+  .spectators-visit-grid,
+  .spectators-resource-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spectators-visit-item {
+    padding: 20px 0 26px;
+  }
+
+  .spectators-feature-photo {
+    min-height: 230px;
+  }
+
+  .spectators-feature-panel {
+    min-height: 0;
+    gap: 20px;
+    padding: 26px 23px;
+  }
+
+  .spectators-safety {
+    padding: 29px 23px;
+  }
+
+  .spectators-updates {
+    margin-top: 54px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spectators-page a,
+  .spectators-page a *,
+  .spectators-page *::before,
+  .spectators-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

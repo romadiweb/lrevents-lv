@@ -26,6 +26,11 @@
   white-space: nowrap;
   transition: color 220ms ease;
 }
+
+/* Inherit the header's scroll color transition without adding a second fade. */
+a.nav-link {
+  transition: none;
+}
 .nav-link::after {
   content: "";
   position: absolute;
