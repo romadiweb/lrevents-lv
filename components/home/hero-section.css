@@ -35,6 +35,7 @@
   max-width: 11ch;
   margin: 0 0 28px;
   font-size: clamp(3.25rem, 6vw, 5.75rem);
+  font-style: italic;
   font-weight: 560;
   line-height: 0.98;
   letter-spacing: -0.038em;
@@ -72,6 +73,7 @@
   margin: 0 0 16px;
   color: #d6d6d2;
   font-size: 11px;
+  font-style: italic;
   font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -79,6 +81,7 @@
 .next-event-panel h2 {
   margin: 0 0 14px;
   font-size: clamp(2rem, 3.2vw, 3.2rem);
+  font-style: italic;
   font-weight: 560;
   line-height: 1.04;
   letter-spacing: -0.03em;
@@ -114,6 +117,7 @@
 .countdown-unit span {
   display: block;
   font-size: clamp(2rem, 3vw, 3.25rem);
+  font-style: italic;
   font-weight: 560;
   line-height: 1;
   letter-spacing: -0.035em;
@@ -157,42 +161,60 @@
     background: linear-gradient(0deg, rgb(10 9 9 / 95%) 0%, rgb(10 9 9 / 67%) 68%, rgb(10 9 9 / 45%) 100%);
   }
   .home-hero-grid {
-    min-height: calc(100svh - var(--utility-height) - var(--header-height) - 80px);
-    gap: 24px;
-    padding-block: 24px;
+    min-height: min(600px, calc(100svh - var(--utility-height) - var(--header-height) - 64px));
+    gap: 18px;
+    padding-block: 28px 24px;
   }
   .hero-introduction h1 {
-    max-width: 12ch;
-    margin-bottom: 16px;
-    font-size: clamp(2.25rem, 10vw, 3rem);
+    max-width: 13ch;
+    margin-bottom: 12px;
+    font-size: clamp(2rem, 9vw, 2.4rem);
+    font-weight: 650;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
   }
   .hero-introduction p {
-    margin-bottom: 16px;
-    font-size: 15px;
+    max-width: 38ch;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
   }
   .next-event-panel {
-    padding: 16px 0 0;
+    padding: 14px 0 0;
     border-top: 1px solid rgb(255 255 255 / 42%);
     border-left: 0;
   }
+  .next-event-label {
+    margin-bottom: 9px;
+    font-size: 10px;
+  }
   .next-event-panel h2 {
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    margin-bottom: 9px;
+    font-size: clamp(1.6rem, 7vw, 1.95rem);
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
   .next-event-meta {
-    margin-bottom: 16px;
+    margin-bottom: 13px;
+    font-size: 12px;
+  }
+  .event-countdown {
+    margin-bottom: 20px;
   }
   .countdown-unit {
-    padding-inline: 10px;
+    padding-inline: 8px;
   }
   .countdown-unit span {
-    font-size: clamp(1.7rem, 9vw, 2.5rem);
+    font-size: clamp(1.55rem, 8vw, 2rem);
+    font-weight: 650;
   }
   .countdown-unit small {
     font-size: 8px;
   }
 }
 @media (max-width: 379px) {
-  .hero-event-cta {
+  .hero-event-cta,
+  .hero-secondary-button {
     width: 100%;
   }
 }

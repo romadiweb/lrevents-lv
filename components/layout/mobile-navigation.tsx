@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { navigation, registrationLink } from "@/lib/navigation";
 import { Brand } from "./brand";
 import { SocialLinks } from "./social-links";
@@ -46,10 +46,13 @@ export function MobileNavigation() {
                     </> : <Link className="mobile-nav-direct" href={item.href} aria-current={pathname === item.href ? "page" : undefined} onClick={() => changeOpen(false)}>{item.label}</Link>}
                   </li>
                 ))}
-                <li><Link className="mobile-register" href={registrationLink.href} onClick={() => changeOpen(false)}>{registrationLink.label}</Link></li>
               </ul>
             </nav>
             <div className="mobile-menu-bottom">
+              <Link className="primary-button mobile-register" href={registrationLink.href} onClick={() => changeOpen(false)}>
+                {registrationLink.label}
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </Link>
               <SocialLinks />
               <p className="mobile-menu-copyright">© 2026 LR Events</p>
               <CookieSettings />

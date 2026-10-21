@@ -1,13 +1,26 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 import type { ArticlePreview } from "@/lib/mock-events";
 import "./articles-section.css";
 
 export function ArticlesSection({ articles }: { articles: ArticlePreview[] }) {
-  const [featured, ...supporting] = articles;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const featured = articles[activeIndex] ?? articles[0];
+  const supporting = articles.filter((_, index) => index !== activeIndex);
 
   if (!featured) return null;
+
+  const showPrevious = () => {
+    setActiveIndex((current) => (current - 1 + articles.length) % articles.length);
+  };
+
+  const showNext = () => {
+    setActiveIndex((current) => (current + 1) % articles.length);
+  };
 
   return (
     <section className="articles-section" aria-labelledby="articles-title">
@@ -21,6 +34,27 @@ export function ArticlesSection({ articles }: { articles: ArticlePreview[] }) {
         </div>
 
         <article className="featured-article" id={featured.id}>
+          {articles.length > 1 && (
+            <div className="articles-carousel-navigation" aria-label="Izvēlētā raksta navigācija">
+              <button type="button" onClick={showPrevious} aria-label="Iepriekšējais raksts">
+                <span className="articles-navigation-ring" aria-hidden="true">
+                  <svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" pathLength="1" /></svg>
+                </span>
+                <ChevronLeft size={20} aria-hidden="true" />
+              </button>
+              <span className="articles-carousel-count" aria-live="polite">
+                {String(activeIndex + 1).padStart(2, "0")}
+                <span aria-hidden="true"> / </span>
+                {String(articles.length).padStart(2, "0")}
+              </span>
+              <button type="button" onClick={showNext} aria-label="Nākamais raksts">
+                <span className="articles-navigation-ring" aria-hidden="true">
+                  <svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" pathLength="1" /></svg>
+                </span>
+                <ChevronRight size={20} aria-hidden="true" />
+              </button>
+            </div>
+          )}
           <Link className="featured-article-link" href={featured.href} aria-label={`Lasīt rakstu: ${featured.title}`}>
             <span className="featured-article-image" aria-hidden="true">
               <Image

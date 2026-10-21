@@ -10,5 +10,5 @@ async function RoundResults({ searchParams }: PageProps) {
   return <ResultsBoard key={`${params.posms}-${params.klase}`} seasons={currentSeasons} mode="rounds" initialRoundId={typeof params.posms === "string" ? params.posms : undefined} initialClassId={typeof params.klase === "string" ? params.klase : undefined} />;
 }
 export default function ResultsPage(props: PageProps) {
-  return <Suspense fallback={<main id="main-content" className="results-page-heading container"><h1>Posmu rezultāti</h1><p role="status">Ielādē rezultātus…</p></main>}><RoundResults {...props} /></Suspense>;
+  return <Suspense fallback={<main id="main-content" className="results-page-heading site-content-page container"><h1>Posmu rezultāti</h1><p role="status">Ielādē rezultātus…</p></main>}><RoundResults {...props} /></Suspense>;
 }

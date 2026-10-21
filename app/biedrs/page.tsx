@@ -67,7 +67,7 @@ export default function MembershipPage() {
   }
 
   return (
-    <main id="main-content" className="membership-page">
+    <main id="main-content" className="membership-page site-content-page">
       <section className="member-hero" aria-labelledby="member-title">
         <div className="member-container member-hero-copy">
           <h1 id="member-title">Kļūsti par <em>savējo.</em></h1>

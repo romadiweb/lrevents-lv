@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function DocumentsPage() {
   return (
-    <main id="main-content" className="documents-page">
+    <main id="main-content" className="documents-page site-content-page">
       <div className="container">
         <nav className="documents-breadcrumb" aria-label="Atrašanās vieta">
           <Link href="/">Sākums</Link>

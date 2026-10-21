@@ -238,7 +238,7 @@ export function ResultsBoard({
   }
   const title = mode === "standings" ? "Kopvērtējums" : "Posmu rezultāti";
   return (
-    <main id="main-content" className="results-page">
+    <main id="main-content" className="results-page site-content-page">
       <div className="results-page-heading container">
         <nav className="results-breadcrumb" aria-label="Atrašanās vieta">
           <Link href="/">Sākums</Link>
@@ -334,11 +334,8 @@ export function ResultsBoard({
               </div>
               {season.status === "preview" && (
                 <div className="standings-preview-note" role="note">
-                  <strong>DEMONSTRĀCIJAS DATI</strong>
-                  <span>
-                    Redzamie braucēji, punkti un braucienu laiki ir dizaina
-                    piemērs, nevis oficiāli LR Events rezultāti.
-                  </span>
+                  <strong>NEOFICIĀLI</strong>
+                  <span>Rezultāti tiks precizēti pēc to apstiprināšanas.</span>
                 </div>
               )}
               {season.classes

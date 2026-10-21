@@ -97,3 +97,132 @@ button {
 .primary-button:active {
   background: var(--maroon);
 }
+
+/* Shared editorial typography and interaction language for interior pages. */
+body .site-content-page :is(h1, h2, h3) {
+  font-style: italic;
+  text-wrap: balance;
+}
+body .site-content-page :is(h1, h2) {
+  letter-spacing: -0.03em;
+}
+body .site-content-page h3 {
+  letter-spacing: -0.02em;
+}
+body .site-content-page :is(h1, h2, h3) em {
+  font-style: inherit;
+}
+body .site-content-page :is(
+  .participants-action-link,
+  .participants-document-feature-link,
+  .participants-inline-link,
+  .participants-email,
+  .participants-resource-text,
+  .spectators-feature-link,
+  .spectators-updates-link,
+  .spectators-resource-title,
+  .spectators-contact-note a,
+  .judges-primary-link,
+  .judges-secondary-link,
+  .judges-documents a,
+  .judges-all-contacts,
+  .document-action,
+  .about-text-link,
+  .about-primary-link,
+  .member-inline-link,
+  .member-submit,
+  .member-form-footnote a,
+  .member-success button,
+  .event-org-hero-link,
+  .event-org-contact-value,
+  .event-org-all-contacts,
+  .partners-hero-link,
+  .partners-contact-email,
+  .partners-contact-phone,
+  .partners-contact-all,
+  .results-navigation > a,
+  .standings-footer a,
+  .archive-back-link,
+  .archive-footnote a,
+  .archive-empty-state a
+) {
+  font-style: italic;
+}
+body .site-content-page :is(a, button) {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+body .site-content-page :is(
+  .participants-action-link,
+  .participants-document-feature-link,
+  .participants-inline-link,
+  .participants-email,
+  .participants-resource,
+  .spectators-feature-link,
+  .spectators-updates-link,
+  .spectators-resource-link,
+  .spectators-contact-note a,
+  .judges-primary-link,
+  .judges-secondary-link,
+  .judges-documents a,
+  .judges-all-contacts,
+  .document-card,
+  .about-text-link,
+  .about-primary-link,
+  .member-inline-link,
+  .member-submit,
+  .member-form-footnote a,
+  .member-success button,
+  .event-org-hero-link,
+  .event-org-contact-method,
+  .event-org-all-contacts,
+  .partners-hero-link,
+  .partners-contact-email,
+  .partners-contact-phone,
+  .partners-contact-all,
+  .results-navigation > a,
+  .standings-footer a,
+  .archive-footnote a,
+  .archive-empty-state a
+) svg {
+  transition: transform var(--motion);
+}
+body .site-content-page :is(
+  .participants-action-link,
+  .participants-document-feature-link,
+  .participants-inline-link,
+  .participants-email,
+  .participants-resource,
+  .spectators-feature-link,
+  .spectators-updates-link,
+  .spectators-resource-link,
+  .spectators-contact-note a,
+  .judges-primary-link,
+  .judges-secondary-link,
+  .judges-documents a,
+  .judges-all-contacts,
+  .document-card,
+  .about-text-link,
+  .about-primary-link,
+  .member-inline-link,
+  .member-submit,
+  .member-form-footnote a,
+  .member-success button,
+  .event-org-hero-link,
+  .event-org-contact-method,
+  .event-org-all-contacts,
+  .partners-hero-link,
+  .partners-contact-email,
+  .partners-contact-phone,
+  .partners-contact-all,
+  .results-navigation > a,
+  .standings-footer a,
+  .archive-footnote a,
+  .archive-empty-state a
+):is(:hover, :focus-visible) svg {
+  transform: translateX(4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  body .site-content-page :is(a, button, svg) {
+    transition: none !important;
+  }
+}

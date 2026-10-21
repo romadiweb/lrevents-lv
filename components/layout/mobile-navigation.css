@@ -16,7 +16,7 @@
 .mobile-menu-scroll { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #777777 var(--noir); display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 32px 20px 40px; }
 .mobile-menu-label { margin: 0 0 4px; color: #c5c5c5; font-size: 12px; font-weight: 700; font-style: italic; text-transform: uppercase; }
 .mobile-links, .mobile-links ul { margin: 0; padding: 0; list-style: none; }
-.mobile-nav-toggle, .mobile-nav-direct, .mobile-register, .mobile-submenu a { display: flex; align-items: center; width: fit-content; max-width: 100%; min-height: 44px; gap: 9px; padding: 8px 0; border: 0; color: #fff; background: none; font-size: 12px; font-weight: 700; font-style: italic; line-height: 1.5; text-transform: uppercase; text-align: left; transition: color 180ms ease; }
+.mobile-nav-toggle, .mobile-nav-direct, .mobile-submenu a { display: flex; align-items: center; width: fit-content; max-width: 100%; min-height: 44px; gap: 9px; padding: 8px 0; border: 0; color: #fff; background: none; font-size: 12px; font-weight: 700; font-style: italic; line-height: 1.5; text-transform: uppercase; text-align: left; transition: color 180ms ease; }
 .mobile-menu [aria-current="page"] { text-decoration: underline; text-decoration-color: var(--cherry); text-decoration-thickness: 2px; text-underline-offset: 7px; }
 .mobile-nav-toggle svg { flex: none; transition: transform 180ms ease; }
 .mobile-nav-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
@@ -24,8 +24,15 @@
 .mobile-submenu[hidden] { display: none; }
 .mobile-submenu a { font-size: 11px; }
 .mobile-nav-direct:hover, .mobile-nav-toggle:hover, .mobile-submenu a:hover { color: var(--surface); }
-.mobile-register { margin-top: 8px; border-bottom: 1px solid #fff; }
-.mobile-register:hover { color: var(--surface); border-color: var(--cherry); }
+.mobile-register {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 0 20px;
+  border: 0;
+  font-style: italic;
+  text-decoration: none;
+}
+.mobile-register:hover { color: var(--surface); }
 .mobile-menu-bottom { margin-top: auto; padding-top: 52px; }
 .mobile-menu-bottom .social-links { gap: 4px; margin-left: -12px; }
 .mobile-menu-bottom .social-icon { width: 44px; height: 44px; color: #c5c5c5; }

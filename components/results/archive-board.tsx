@@ -247,7 +247,7 @@ export function ArchiveBoard({ seasons }: { seasons: ResultsSeason[] }) {
   }
 
   return (
-    <main id="main-content" className="archive-page">
+    <main id="main-content" className="archive-page site-content-page">
       <div className="archive-intro container">
         <nav className="archive-breadcrumb" aria-label="Atrašanās vieta">
           <Link href="/">Sākums</Link>
@@ -350,11 +350,8 @@ export function ArchiveBoard({ seasons }: { seasons: ResultsSeason[] }) {
 
               {season.status === "preview" && (
                 <div role="note" className="archive-preview-note">
-                  <strong>DEMONSTRĀCIJAS DATI</strong>
-                  <span>
-                    Redzamie gadi, braucēji, klases un punkti ir dizaina
-                    piemērs, nevis oficiāli LR Events vēsturiskie rezultāti.
-                  </span>
+                  <strong>ARHĪVS TIEK PAPILDINĀTS</strong>
+                  <span>Vēsturiskie rezultāti vēl tiek pārbaudīti un precizēti.</span>
                 </div>
               )}
 

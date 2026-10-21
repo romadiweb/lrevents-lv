@@ -29,7 +29,7 @@ const roles = [
 
 export default function JudgesPage() {
   return (
-    <main id="main-content" className="judges-page container">
+    <main id="main-content" className="judges-page site-content-page container">
       <nav className="judges-breadcrumb" aria-label="Atrašanās vieta">
         <Link href="/">Sākums</Link>
         <span aria-hidden="true">/</span>

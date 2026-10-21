@@ -47,7 +47,7 @@ const collaboration = [
 
 export default function PartnersPage() {
   return (
-    <main id="main-content" className="partners-page">
+    <main id="main-content" className="partners-page site-content-page">
       {/* Editorial opening: a narrow trackside photograph rather than a repeat of the other pages' heroes. */}
       <section className="partners-hero" aria-labelledby="partners-title">
         <div className="partners-container partners-hero-layout">

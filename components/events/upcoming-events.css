@@ -14,6 +14,7 @@
 .upcoming-heading h2 {
   margin: 0;
   font-size: clamp(2.4rem, 4.5vw, 4.25rem);
+  font-style: italic;
   font-weight: 540;
   line-height: 1.04;
   letter-spacing: -0.035em;
@@ -41,6 +42,7 @@
   overflow: hidden;
   background: var(--noir, #171717);
   color: #fff;
+  font-style: italic;
   text-decoration: none;
   isolation: isolate;
   cursor: pointer;

@@ -54,7 +54,7 @@ const resources = [
 
 export default function ParticipantsPage() {
   return (
-    <main id="main-content" className="participants-page">
+    <main id="main-content" className="participants-page site-content-page">
       <header className="participants-header">
         <div className="participants-container">
           <nav className="participants-breadcrumbs" aria-label="Atrašanās vieta">

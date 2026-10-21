@@ -60,6 +60,15 @@
 .round-results-total {
   font-weight: 700;
 }
+.round-results-table .round-results-place {
+  background: var(--results-bg, #fafaf8);
+  color: var(--results-cherry, #810100);
+  font-size: 15px;
+  font-style: italic;
+}
+.round-results-table tbody tr:hover .round-results-place {
+  background: var(--results-bg, #fafaf8);
+}
 .round-results-penalty {
   color: #ffb4b0;
   font-weight: 650;
@@ -104,6 +113,18 @@
   }
   .round-results-mobile-entry summary::-webkit-details-marker {
     display: none;
+  }
+  .round-results-mobile-entry summary .round-results-place {
+    display: inline-flex;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    margin: -16px 0 -16px -12px;
+    background: var(--results-bg, #fafaf8);
+    color: var(--results-cherry, #810100);
+    font-size: 18px;
+    font-style: italic;
   }
   .round-results-person {
     flex: 1;

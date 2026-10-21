@@ -56,7 +56,7 @@ const principles = [
 
 export default function AboutPage() {
   return (
-    <main id="main-content" className="about-page">
+    <main id="main-content" className="about-page site-content-page">
       <section className="about-hero" aria-labelledby="about-title">
         <div className="about-container about-hero-grid">
           <div className="about-hero-copy">
@@ -70,7 +70,7 @@ export default function AboutPage() {
               Iepazīsti LR Events <ArrowDownRight size={18} aria-hidden="true" />
             </a>
           </div>
-          <div className="about-hero-art" role="img" aria-label="Vieta LR Events autosporta sacensību fotogrāfijai">
+          <div className="about-hero-art" role="img" aria-label="LR Events autosporta sacensību vide">
             <div className="about-hero-photo" />
             <div className="about-hero-photolabel"><span>LR / EVENTS</span><span>AUTO · MOTO · SPORTS</span></div>
             <div className="about-hero-corner" aria-hidden="true" />
@@ -133,7 +133,7 @@ export default function AboutPage() {
                   <h3>{activity.title}</h3>
                   <p>{activity.description}</p>
                 </div>
-                <div className={`about-activity-photo ${activity.imageClass}`} role="img" aria-label={`Vieta fotogrāfijai: ${activity.imageLabel}`}>
+                <div className={`about-activity-photo ${activity.imageClass}`} role="img" aria-label={activity.imageLabel}>
                   <span>{activity.imageLabel}</span>
                 </div>
                 <ArrowUpRight className="about-activity-arrow" size={22} strokeWidth={1.4} aria-hidden="true" />

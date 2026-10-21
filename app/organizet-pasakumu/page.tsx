@@ -54,7 +54,7 @@ const conversationTopics = [
 
 export default function EventOrganizationPage() {
   return (
-    <main id="main-content" className="event-org-page">
+    <main id="main-content" className="event-org-page site-content-page">
       {/* One image-led hero: deliberately different from the About and Membership layouts. */}
       <section className="event-org-hero" aria-labelledby="event-org-title">
         <div className="event-org-hero-photo" aria-hidden="true" />

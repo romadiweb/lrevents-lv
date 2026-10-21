@@ -71,7 +71,7 @@ const relatedLinks = [
 
 export default function SpectatorsPage() {
   return (
-    <main id="main-content" className="spectators-page container">
+    <main id="main-content" className="spectators-page site-content-page container">
       <nav className="spectators-breadcrumb" aria-label="Atrašanās vieta">
         <Link href="/">Sākums</Link>
         <ChevronRight size={13} aria-hidden="true" />
