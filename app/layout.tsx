@@ -4,6 +4,7 @@ import "./globals.css";
 import "@/components/layout/dialog.css";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning>
+        <ScrollToTop />
         <SiteHeader />
         {children}
         <SiteFooter />

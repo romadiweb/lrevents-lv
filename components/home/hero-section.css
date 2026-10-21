@@ -144,6 +144,9 @@
   }
 }
 @media (max-width: 767px) {
+  .hero-text-link {
+    display: none;
+  }
   .home-hero {
     min-height: auto;
   }
