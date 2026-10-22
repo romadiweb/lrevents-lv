@@ -18,6 +18,8 @@ Articles receive `published_at` on first publication through a database trigger;
 
 The editor supports image selection or drag/drop. The server validates and decodes the file, removes metadata, preserves transparency, and produces WebP: photos fit within 1920×1920; logos within 640×640. The public `cms-media` bucket contains these images. Storage writes require an active CMS profile and the user's upload folder. Unused images are retained when records/images are removed, preserving any shared image URLs; cleanup can be added later.
 
+Partner-logo uploads also accept SVG (file picker or drop). SVG is rendered at logo resolution and stored as lossless transparent WebP, rather than serving the uploaded XML. Photo/gallery uploads continue to accept raster formats only.
+
 Published partners feed the clickable homepage sponsor strip and footer. Team records feed Kontakti. Articles feed the homepage, category archive and detail pages. Events feed homepage cards/countdown, calendar, upcoming/archive lists, and detail pages with participant text and linked documents. Dates/times use Europe/Riga. Association address and banking details remain in `lib/contacts.ts`.
 
 Public content is cached for 60 seconds (five-minute maximum expiry). CMS saves invalidate content and public routes immediately. Connection/table failures retain the prior labelled local fixtures. Empty functioning CMS tables stay empty.
@@ -26,10 +28,18 @@ Public content is cached for 60 seconds (five-minute maximum expiry). CMS saves 
 
 `npm run test:cms` runs the migration in embedded PostgreSQL: RLS, publication dates, profile protection, document visibility, atomic rollback, category constraints, upload ownership and deactivation.
 
-`npm run test:cms:live` is an explicit live integration check. It creates labelled temporary records and a temporary user, tests protected endpoints, compression, publication, dynamic pages and links, then removes its records/media/user. It needs a running local app and the initial local credential file. After changing the owner's password, use a dedicated test account instead of the initial credential.
+`npm run test:cms:live` is an explicit live integration check. It creates a dedicated temporary CMS test account plus labelled temporary records and another temporary user, tests protected endpoints, compression, publication, dynamic pages and links, then removes its records/media/users. It requires a running local app and server credentials, and never reads or changes the owner's password. Set `CMS_TEST_ORIGIN=http://localhost:3001` to test a local production preview instead of the default port 3000.
 
 `scripts/bootstrap-cms-user.mjs` can rerun profile bootstrap without resetting an existing password. `scripts/cms-database.mjs --pooler --verify` uses the private machine-only connection file `~/.codex/private/lrevents-db.json`; runtime website operations never use the database password.
 
 For password-recovery email links, configure Supabase Auth's Site URL and allowed redirects for the deployed origin and `http://localhost:3000/auth/callback`. Recovery uses PKCE and returns to `/auth/password`. Initial-password login works independently of email delivery configuration.
 
 The connected Supabase MCP account still lacks management permission for this project, so its automated advisors were unavailable. Direct SQL inspection and public/authenticated API checks were used. Run dashboard Security/Performance Advisors after reconnecting that account.
+
+## Gallery
+
+`migrations/20261022120523_gallery_content.sql` is applied and recorded in the live project. `cms_gallery` stores one image value and its selected source (`upload` or `url`), optional title/category, required accessible image description, sort order and publication state. Gallery uses the existing shared category catalog. Source choice is enforced by the editor, server validation and database constraint; URL mode accepts HTTPS, while upload mode accepts the configured media bucket or existing local site images. Uploaded photos use the existing compression path. External URLs load directly in the visitor's browser, bypassing the server image optimizer.
+
+The existing four homepage photographs were imported as published editable records. The first four published gallery records, ordered by `sort_order` and then newest first, form the homepage carousel. Empty galleries hide that homepage band. `/galerija` shows all published records in square tiles with optional captions, category filtering and an accessible image viewer. Gallery saves invalidate the same CMS cache as the other content sections. Draft images stay off public gallery pages; files in the media bucket remain public by design.
+
+Partner logos: optional `belt_image` is uploaded in Partneri and used only in the homepage belt, falling back to the main `image`. Footer always uses the main logo. Both support SVG and transparent compressed WebP; grey preview backing is CMS-only. Migration `20261022123550_partner_belt_logo_field.sql` applied.

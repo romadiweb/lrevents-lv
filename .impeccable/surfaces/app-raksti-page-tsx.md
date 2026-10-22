@@ -2,7 +2,7 @@
 version: 1
 slug: "app-raksti-page-tsx"
 primary_target: "app/raksti/page.tsx"
-related_targets: []
+related_targets: ["app/raksti/raksti.css"]
 ---
 
 # Raksti archive
@@ -22,6 +22,10 @@ FIRST VIEWPORT: Compact breadcrumb and Raksti heading, category control, then a 
 FORM: User-specified archive composition, adapted directly from the supplied reference; no seed or alternate concept round applies. Pagination and category live in the URL. Demonstration articles are clearly labeled and isolated from presentation for later CMS replacement.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+
+## Article reading width extension
+
+The article detail text column (`.news-detail-body` in app/raksti/raksti.css) now has a 900px maximum width, centered with a 40px top margin. The surrounding responsive container continues to limit its width on smaller screens. This is the user's requested desktop reading-width adjustment; archive composition, typography and the established design system remain as documented. Source checked directly; browser validation belongs to the parent task.
 
 ## Content provenance
 

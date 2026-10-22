@@ -1,4 +1,4 @@
-export type Sponsor = { id: string; label: string; logoSrc?: string; href?: string };
+export type Sponsor = { id: string; label: string; logoSrc?: string; beltLogoSrc?: string; href?: string };
 
 // Replace these shared slots with approved sponsor names and local logo assets.
 export const sponsors: Sponsor[] = Array.from({ length: 12 }, (_, index) => ({

@@ -9,7 +9,7 @@ export async function SponsorBelt() {
     <div className="container sponsor-belt-inner">
       <div className="sponsor-belt-window">
         <div className="sponsor-belt-track">
-          {[0, 1].map(copy => <ul className="sponsor-belt-group" key={copy} aria-hidden={copy === 1 ? true : undefined}>{sponsors.map(sponsor => <li className="sponsor-belt-mark" key={sponsor.id}><SponsorMark sponsor={sponsor} duplicate={copy === 1} /></li>)}</ul>)}
+          {[0, 1].map(copy => <ul className="sponsor-belt-group" key={copy} aria-hidden={copy === 1 ? true : undefined}>{sponsors.map(sponsor => <li className="sponsor-belt-mark" key={sponsor.id}><SponsorMark sponsor={sponsor} variant="belt" duplicate={copy === 1} /></li>)}</ul>)}
         </div>
       </div>
     </div>

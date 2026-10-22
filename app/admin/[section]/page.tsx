@@ -12,7 +12,7 @@ async function Editor({ params }: { params: Promise<{ section: string }> }) {
   const client = section === "lietotaji" ? createAdminClient() : identity.client;
   const [records, categories, documents, links] = await Promise.all([
     client.from(sections[section].table).select("*").order("created_at", { ascending: false }),
-    section === "raksti" ? identity.client.from("cms_categories").select("id,name").order("name") : Promise.resolve({ data: [], error: null }),
+    section === "raksti" || section === "galerija" ? identity.client.from("cms_categories").select("id,name").order("name") : Promise.resolve({ data: [], error: null }),
     section === "pasakumi" ? identity.client.from("cms_documents").select("id,title,published").order("title") : Promise.resolve({ data: [], error: null }),
     section === "pasakumi" ? identity.client.from("cms_event_documents").select("event_id,document_id") : Promise.resolve({ data: [], error: null }),
   ]);

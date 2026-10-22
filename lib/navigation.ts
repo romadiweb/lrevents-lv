@@ -19,6 +19,7 @@ export const navigation: NavItem[] = [
     { label: "Skatītājiem", href: "/skatitajiem" },
     { label: "Tiesnešiem", href: "/tiesnesiem" },
     { label: "Dokumenti", href: "/dokumenti" },
+    { label: "Galerija", href: "/galerija" },
   ] },
   { label: "Raksti", href: "/raksti" },
   { label: "Par mums", href: "/par-mums", children: [

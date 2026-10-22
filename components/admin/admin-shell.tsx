@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { UsersRound, Newspaper, Tags, Handshake, Files, CalendarDays, UserCog, LogOut, ArrowUpRight } from "lucide-react";
+import { UsersRound, Newspaper, Tags, Handshake, Files, CalendarDays, UserCog, LogOut, ArrowUpRight, Images } from "lucide-react";
 import { sections, type CmsSection } from "@/lib/cms/config";
 import { createBrowserAuthClient } from "@/lib/supabase/browser";
-const icons = { komanda: UsersRound, raksti: Newspaper, kategorijas: Tags, partneri: Handshake, dokumenti: Files, pasakumi: CalendarDays, lietotaji: UserCog };
+const icons = { komanda: UsersRound, raksti: Newspaper, kategorijas: Tags, partneri: Handshake, dokumenti: Files, pasakumi: CalendarDays, lietotaji: UserCog, galerija: Images };
 export function AdminShell({ name, children }: { name: string; children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();

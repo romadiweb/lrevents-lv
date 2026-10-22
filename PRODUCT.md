@@ -20,6 +20,8 @@ Latvian-language LR Events website presenting motorsport events, participant inf
 - Iepriekšējie pasākumi is a separate list-only page using the same cards, with ended events sorted newest first.
 - Event pages show venue, schedule, participation and documents, with the existing season standings below (not event-specific winners).
 - The homepage team standings use car-make logo watermarks and anonymous driver silhouettes until verified makes and portraits are available.
+- Gallery images are managed in CMS with an exclusive URL/upload choice, optional titles/categories and explicit publication. The homepage loops through the first four published images; `/galerija` shows square tiles, category filtering and larger image viewing.
+- Desktop article text uses a wider 900px maximum column. When no upcoming event exists, the hero's event link opens the past-event archive.
 
 ## Evidence on Hand
 

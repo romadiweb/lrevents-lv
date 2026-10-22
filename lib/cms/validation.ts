@@ -25,12 +25,12 @@ export function validateRecord(section: CmsSection, input: Record<string, unknow
     if (value.length > (field.type === "textarea" ? 100000 : 2048)) throw Error(`${field.label}: teksts ir pārāk garš.`);
     if (value && field.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) throw Error("Ievadi derīgu e-pasta adresi.");
     if (value && field.type === "url" && !httpUrl(value)) throw Error("Saitei jāsākas ar https:// vai http://.");
-    if (value && field.type === "image" && !(value.startsWith("/images/") || httpUrl(value))) throw Error("Augšupielādē derīgu attēlu.");
+    if (value && (field.type === "image" || field.type === "gallery-image") && !(value.startsWith("/images/") || httpUrl(value))) throw Error("Augšupielādē derīgu attēlu.");
     if (value && field.type === "category" && !isUuid(value)) throw Error("Izvēlies kategoriju.");
     if (value && field.type === "select" && !field.options?.includes(value)) throw Error("Izvēlies faila veidu.");
     if (value && field.type === "date" && (!/^\d{4}-\d{2}-\d{2}$/.test(value) || new Date(`${value}T12:00Z`).toISOString().slice(0, 10) !== value)) throw Error("Ievadi derīgu datumu.");
     if (value && field.type === "time" && !/^([01]\d|2[0-3]):[0-5]\d(?::00)?$/.test(value)) throw Error("Ievadi laiku formātā HH:MM.");
-    result[field.key] = field.type === "email" ? value.toLowerCase() : value;
+    result[field.key] = field.type === "category" && !value ? null : field.type === "email" ? value.toLowerCase() : value;
   }
   if ("slug" in result) {
     result.slug = slugify(String(result.slug || result.title || result.name));
@@ -38,5 +38,12 @@ export function validateRecord(section: CmsSection, input: Record<string, unknow
     if (section === "pasakumi" && result.slug === "arhivs") throw Error("Adrese “arhivs” ir rezervēta.");
   }
   if (section !== "lietotaji" && section !== "kategorijas") result.published = input.published === true;
+  if (section === "galerija") {
+    if (input.image_source !== "upload" && input.image_source !== "url") throw Error("Izvēlies vienu attēla pievienošanas veidu.");
+    const image = String(result.image);
+    if (input.image_source === "url" && (!httpUrl(image) || !image.startsWith("https://"))) throw Error("Attēla adresei jāsākas ar https://.");
+    if (input.image_source === "upload" && !image.startsWith("/images/") && !image.startsWith(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/cms-media/`)) throw Error("Pievieno failu ar augšupielādes pogu vai izvēlies attēla adresi.");
+    result.image_source = input.image_source;
+  }
   return result;
 }

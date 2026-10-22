@@ -3,22 +3,25 @@ import assert from 'node:assert/strict';
 import nextEnv from '@next/env';
 import {createClient} from '@supabase/supabase-js';
 import {createServerClient} from '@supabase/ssr';
-import {readFile} from 'node:fs/promises';
-import {homedir} from 'node:os';
-import path from 'node:path';
+import {randomBytes} from 'node:crypto';
 import sharp from 'sharp';
 nextEnv.loadEnvConfig(process.cwd());
 if(!process.argv.includes('--run'))throw Error('Explicit --run required for temporary live test records.');
-const base='http://localhost:3000';
+const base=process.env.CMS_TEST_ORIGIN || 'http://localhost:3000';
+if(!/^http:\/\/localhost:3\d{3}$/.test(base))throw Error('Live tests must target a local preview.');
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL, key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-const credentials=await readFile(path.join(homedir(),'.codex/private/lrevents-first-login.txt'),'utf8');
-const password=credentials.match(/Initial password: (.+)/)?.[1];
-if(!password)throw Error('Initial local test credentials unavailable.');
+const admin=createClient(url,process.env.SUPABASE_SECRET_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+const testerEmail=`cms-run-${randomBytes(6).toString('hex')}@example.test`;
+const password=randomBytes(24).toString('base64url');
+const {data:tester,error:testerError}=await admin.auth.admin.createUser({email:testerEmail,password,email_confirm:true});
+assert.ifError(testerError);
+const testerId=tester.user.id;
+const {error:profileError}=await admin.from('cms_users').insert({id:testerId,email:testerEmail,first_name:'CMS',last_name:'Integration test'});
+if(profileError){await admin.auth.admin.deleteUser(testerId);assert.ifError(profileError);}
 const jar=new Map();
 const client=createServerClient(url,key,{cookies:{getAll:()=>[...jar].map(([name,value])=>({name,value})),setAll:values=>values.forEach(({name,value})=>jar.set(name,value))}});
-const {error:loginError}=await client.auth.signInWithPassword({email:'roberts.dzerins@romadi.lv',password});
-assert.ifError(loginError);
-const admin=createClient(url,process.env.SUPABASE_SECRET_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+const {error:loginError}=await client.auth.signInWithPassword({email:testerEmail,password});
+if(loginError){await admin.auth.admin.deleteUser(testerId);assert.ifError(loginError);}
 const anon=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
 const cookie=()=>[...jar].map(([name,value])=>`${name}=${value}`).join('; ');
 const suffix=Date.now().toString(36), title=`CMS pārbaude ${suffix}`;
@@ -33,7 +36,7 @@ try{
   assert.equal((await request('kategorijas',{name:title},false)).status,401);
   assert.equal((await request('kategorijas',{name:title},true,'https://example.test')).status,403);
   const denied=await anon.from('cms_users').select('*');assert.ok(denied.error);
-  const adminPage=await fetch(`${base}/admin/komanda`,{headers:{Cookie:cookie()}});assert.equal(adminPage.status,200);assert.ok((await adminPage.text()).includes('Roberts'));
+  const adminPage=await fetch(`${base}/admin/komanda`,{headers:{Cookie:cookie()}});assert.equal(adminPage.status,200);assert.ok((await adminPage.text()).includes('CMS sadaļas'));
   await save('kategorijas',{name:title,slug:`cms-check-${suffix}`});
   const category=await find('cms_categories','slug',`cms-check-${suffix}`);
   const image=await sharp({create:{width:1400,height:700,channels:4,background:{r:129,g:1,b:0,alpha:0.5}}}).png().toBuffer();
@@ -42,10 +45,40 @@ try{
   const uploaded=await uploadResponse.json();assert.equal(uploadResponse.status,200,JSON.stringify(uploaded));
   const mediaPath=uploaded.url.split('/cms-media/')[1];media.push(mediaPath);
   const output=Buffer.from(await(await fetch(uploaded.url)).arrayBuffer());const meta=await sharp(output).metadata();assert.equal(meta.format,'webp');assert.ok(meta.width<=640);assert.equal(meta.hasAlpha,true);assert.ok(output.length<image.length);
+  const svgSource='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="8" viewBox="0 0 16 8"><path fill="#810100" d="M0 0h8v8H0z"/></svg>';
+  const svgUpload=new FormData();svgUpload.set('file',new File([svgSource],'partner-logo.svg',{type:'image/svg+xml'}));svgUpload.set('kind','logo');
+  const svgResponse=await fetch(`${base}/api/admin/upload`,{method:'POST',headers:{Origin:base,Cookie:cookie()},body:svgUpload});
+  const svgResult=await svgResponse.json();assert.equal(svgResponse.status,200,JSON.stringify(svgResult));media.push(svgResult.url.split('/cms-media/')[1]);
+  const svgOutput=Buffer.from(await(await fetch(svgResult.url)).arrayBuffer());const svgMeta=await sharp(svgOutput).metadata();assert.equal(svgMeta.format,'webp');assert.equal(svgMeta.width,640);assert.equal(svgMeta.height,320);assert.equal(svgMeta.hasAlpha,true);
+  const svgPhoto=new FormData();svgPhoto.set('file',new File([svgSource],'photo.svg',{type:'image/svg+xml'}));svgPhoto.set('kind','photo');
+  assert.equal((await fetch(`${base}/api/admin/upload`,{method:'POST',headers:{Origin:base,Cookie:cookie()},body:svgPhoto})).status,400);
+  await save('galerija',{title:'',alt:title,image:uploaded.url,image_source:'url',category_id:'',sort_order:-100,published:false});
+  const gallery=await find('cms_gallery','alt',title);
+  assert.equal(gallery.category_id,null);
+  assert.equal((await anon.from('cms_gallery').select('id').eq('id',gallery.id)).data.length,0);
+  assert.equal((await request('galerija',{...gallery,image:'https://example.test/image.jpg',image_source:'upload'})).status,400);
+  await save('galerija',{...gallery,title,category_id:category.id,published:true});
+  assert.equal((await anon.from('cms_gallery').select('id').eq('id',gallery.id)).data.length,1);
+  const galleryHtml=await(await fetch(`${base}/galerija?kategorija=${category.slug}`)).text();assert.ok(galleryHtml.includes(title));assert.ok(galleryHtml.includes(uploaded.url));
+  await save('galerija',{...gallery,image_source:'upload',title,published:true});
   await save('partneri',{name:title,url:'https://example.test/partner',image:uploaded.url,published:false});
   const partner=await find('cms_partners','name',title);
   assert.equal((await anon.from('cms_partners').select('id').eq('id',partner.id)).data.length,0);
-  await save('partneri',{...partner,published:true});
+  assert.equal(partner.belt_image,'');
+  await save('partneri',{...partner,belt_image:svgResult.url,published:true});
+  const partnerLogos=(await anon.from('cms_partners').select('image,belt_image').eq('id',partner.id).single()).data;
+  assert.equal(partnerLogos.image,uploaded.url);assert.equal(partnerLogos.belt_image,svgResult.url);
+  const logoHtml=await(await fetch(base)).text();
+  const beltHtml=logoHtml.match(/<section class="sponsor-belt"[\s\S]*?<\/section>/)?.[0] || '';
+  const footerHtml=logoHtml.match(/<section class="footer-sponsors"[\s\S]*?<\/section>/)?.[0] || '';
+  assert.ok(beltHtml.includes(encodeURIComponent(svgResult.url)));
+  assert.ok(footerHtml.includes(encodeURIComponent(uploaded.url)));
+  assert.ok(!footerHtml.includes(encodeURIComponent(svgResult.url)));
+  await save('partneri',{...partner,belt_image:'',published:true});
+  const fallbackHtml=await(await fetch(base)).text();
+  const fallbackBelt=fallbackHtml.match(/<section class="sponsor-belt"[\s\S]*?<\/section>/)?.[0] || '';
+  assert.ok(fallbackBelt.includes(encodeURIComponent(uploaded.url)));
+  assert.ok(!fallbackBelt.includes(encodeURIComponent(svgResult.url)));
   assert.equal((await anon.from('cms_partners').select('id').eq('id',partner.id)).data.length,1);
   await save('raksti',{title,slug:`cms-check-${suffix}`,image:uploaded.url,category_id:category.id,body:'CMS pārbaudes teksts.\n\nOtrā rindkopa.',summary:'Automātiska CMS pārbaude.',published:false});
   const article=await find('cms_articles','slug',`cms-check-${suffix}`);
@@ -60,7 +93,7 @@ try{
   await save('pasakumi',{title,slug:`cms-check-${suffix}`,image:uploaded.url,venue:'CMS pārbaudes vieta',city:'Rīga',event_date:'2027-01-15',start_time:'10:30',description:'CMS pārbaudes pasākums.',participant_description:'CMS pārbaudes dalībnieku informācija.',document_ids:[document.id],published:true});
   const event=await find('cms_events','slug',`cms-check-${suffix}`);
   const eventPage=await fetch(`${base}/pasakumi/${event.slug}`);assert.equal(eventPage.status,200);const eventHtml=await eventPage.text();assert.ok(eventHtml.includes('CMS pārbaudes dalībnieku informācija.'));assert.ok(eventHtml.includes('https://example.test/document.pdf'));
-  const home=await(await fetch(base)).text();assert.ok(home.includes(title));assert.ok(home.includes('https://example.test/partner'));
+  const home=await(await fetch(base)).text();assert.ok(home.includes(title));assert.ok(home.includes('https://example.test/partner'));assert.ok(home.includes('href="/galerija"'));
   await save('komanda',{first_name:'CMS pārbaude',last_name:suffix,position:'Pārbaude',email:`cms-${suffix}@example.test`,image:uploaded.url,sort_order:999,published:false});
   await find('cms_team','email',`cms-${suffix}@example.test`);
   await save('lietotaji',{first_name:'CMS',last_name:'Pārbaude',email:`cms-${suffix}@example.test`,password:`Cms-test-${suffix}-temporary`,active:true});
@@ -71,9 +104,10 @@ try{
 }finally{
   for(const [table,id] of ids.reverse()){
     if(table==='cms_users'){await admin.from(table).delete().eq('id',id);await admin.auth.admin.deleteUser(id);}
-    else {const section={cms_team:'komanda',cms_events:'pasakumi',cms_documents:'dokumenti',cms_articles:'raksti',cms_partners:'partneri',cms_categories:'kategorijas'}[table];await request(section,{id,action:'delete'});await admin.from(table).delete().eq('id',id);}
+    else {const section={cms_team:'komanda',cms_events:'pasakumi',cms_documents:'dokumenti',cms_articles:'raksti',cms_partners:'partneri',cms_categories:'kategorijas',cms_gallery:'galerija'}[table];await request(section,{id,action:'delete'});await admin.from(table).delete().eq('id',id);}
   }
   if(media.length)await admin.storage.from('cms-media').remove(media);
   await client.auth.signOut({scope:'local'});
+  await admin.auth.admin.deleteUser(testerId);
   console.log('Temporary test content and uploaded media removed.');
 }

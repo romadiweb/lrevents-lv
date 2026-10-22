@@ -1,0 +1,1 @@
+-- Reserved migration; partner belt logo column follows in the next migration.

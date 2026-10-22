@@ -17,6 +17,18 @@ try {
   await client.connect();
   const tables=(await client.query("select tablename from pg_tables where schemaname='public' order by tablename")).rows;
   console.log('Public tables:',tables.map(row=>row.tablename).join(', ') || '(none)');
+  const migrationArgument=process.argv.find(arg=>arg.startsWith('--migration='))?.slice('--migration='.length);
+  if(migrationArgument) {
+    if(!/^\d{14}_[a-z0-9_]+\.sql$/.test(migrationArgument))throw Error('Invalid migration filename.');
+    const version=migrationArgument.slice(0,14);
+    const exists=await client.query('select version from supabase_migrations.schema_migrations where version=$1',[version]);
+    if(exists.rowCount)throw Error('Migration already recorded; inspect before retrying.');
+    if(!tables.some(row=>row.tablename==='cms_users'))throw Error('CMS base schema missing.');
+    const sql=await readFile(new URL(`../supabase/migrations/${migrationArgument}`,import.meta.url),'utf8');
+    await client.query(sql);
+    await client.query('insert into supabase_migrations.schema_migrations(version,name,statements) values($1,$2,$3)',[version,migrationArgument.slice(15,-4),[sql]]);
+    console.log('Applied migration:',migrationArgument);
+  }
   if(process.argv.includes('--apply')) {
     if(tables.some(row=>row.tablename.startsWith('cms_'))) throw Error('CMS tables already exist; inspect before applying.');
     const account=await client.query("select id from auth.users where lower(email)='roberts.dzerins@romadi.lv'");

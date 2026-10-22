@@ -49,7 +49,7 @@ export function HeroSection({ featuredEvent }: { featuredEvent?: MotorsportEvent
               Reģistrēties
             </Link>
           </div>
-        </div> : <div className="next-event-panel"><h2>Jauni pasākumi būs drīzumā</h2><Link className="hero-text-link" href="/pasakumi">Skatīt pasākumus<ArrowUpRight size={17} /></Link></div>}
+        </div> : <div className="next-event-panel"><h2>Jauni pasākumi būs drīzumā</h2><Link className="hero-text-link" href="/pasakumi/arhivs">Skatīt pasākumus<ArrowUpRight size={17} /></Link></div>}
       </div>
     </section>
   );

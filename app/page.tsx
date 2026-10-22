@@ -4,14 +4,14 @@ import { UpcomingEvents } from "@/components/events/upcoming-events";
 import { ArticlesSection } from "@/components/home/articles-section";
 import { GallerySection } from "@/components/home/gallery-section";
 import { StandingsSection } from "@/components/home/standings-section";
-import { getArticles, getEvents } from "@/lib/cms/content";
+import { getArticles, getEvents, getGallery } from "@/lib/cms/content";
 import { rigaDate } from "@/lib/events";
 import { Suspense } from "react";
 import { connection } from "next/server";
 
 async function HomeContent() {
   await connection();
-  const [articles, events] = await Promise.all([getArticles(), getEvents()]);
+  const [articles, events, gallery] = await Promise.all([getArticles(), getEvents(), getGallery()]);
   const upcomingEvents = events.filter(event => (event.endDate ?? event.date) >= rigaDate(new Date()));
   return (
     <main id="main-content">
@@ -20,7 +20,7 @@ async function HomeContent() {
       <UpcomingEvents events={upcomingEvents} />
       <ArticlesSection articles={articles.slice(0, 4)} />
       <StandingsSection />
-      <GallerySection />
+      <GallerySection images={gallery.slice(0, 4)} key={gallery.slice(0, 4).map(image => `${image.id}:${image.src}`).join("|")} />
     </main>
   );
 }

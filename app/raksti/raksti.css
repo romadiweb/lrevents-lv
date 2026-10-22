@@ -185,7 +185,7 @@
 .news-detail-heading h1 { margin: 20px 0 24px; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 560; line-height: 1.06; }
 .news-detail-heading p { color: var(--muted); font-size: 12px; }
 .news-detail-image { aspect-ratio: 2 / 1; }
-.news-detail-body { max-width: 720px; margin: 40px auto 0; }
+.news-detail-body { max-width: 900px; margin: 40px auto 0; }
 .news-detail-body p { margin-block: 0 24px; font-size: 16px; line-height: 1.8; }
 .news-detail-body p:first-child { font-size: 21px; line-height: 1.6; }
 .news-back { display: inline-flex; align-items: center; gap: 14px; margin-top: 16px; padding-block: 10px; color: var(--cherry); font-size: 12px; font-weight: 650; }

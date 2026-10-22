@@ -9,9 +9,17 @@ export async function POST(request: NextRequest) {
   try {
     const form = await request.formData();
     const file = form.get("file");
-    if (!(file instanceof File) || file.size > 10 * 1024 * 1024 || !["image/png", "image/jpeg", "image/webp", "image/avif"].includes(file.type)) throw Error("Izvēlies PNG, JPG, WebP vai AVIF attēlu līdz 10 MB.");
     const logo = form.get("kind") === "logo";
-    const buffer = await sharp(Buffer.from(await file.arrayBuffer()), { limitInputPixels: 40000000, animated: false }).rotate().resize({ width: logo ? 640 : 1920, height: logo ? 640 : 1920, fit: "inside", withoutEnlargement: true }).webp({ quality: logo ? 85 : 80 }).toBuffer();
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/avif", ...(logo ? ["image/svg+xml"] : [])];
+    const fileError = logo ? "Izvēlies SVG, PNG, JPG, WebP vai AVIF logotipu līdz 10 MB." : "Izvēlies PNG, JPG, WebP vai AVIF attēlu līdz 10 MB.";
+    if (!(file instanceof File) || file.size > 10 * 1024 * 1024 || !(allowedTypes.includes(file.type) || (logo && /\.svg$/i.test(file.name) && ["", "application/octet-stream"].includes(file.type)))) throw Error(fileError);
+    const input = Buffer.from(await file.arrayBuffer());
+    const metadata = await sharp(input, { limitInputPixels: 40000000, animated: false }).metadata();
+    const svg = metadata.format === "svg";
+    if (svg && !logo) throw Error("SVG formāts ir pieejams tikai partneru logotipiem.");
+    // Render SVG from memory, then store only static pixels; no active SVG is served.
+    const density = svg ? Math.min(100000, Math.max(72, Math.ceil(640 * 72 / Math.max(metadata.width ?? 640, metadata.height ?? 640, 1)))) : 72;
+    const buffer = await sharp(input, { limitInputPixels: 40000000, animated: false, density }).rotate().resize({ width: logo ? 640 : 1920, height: logo ? 640 : 1920, fit: "inside", withoutEnlargement: !svg }).webp({ quality: logo ? 85 : 80, lossless: svg }).toBuffer();
     const path = `${identity.user.id}/${crypto.randomUUID()}.webp`;
     const { error } = await identity.client.storage.from("cms-media").upload(path, buffer, { contentType: "image/webp", cacheControl: "31536000", upsert: false });
     if (error) throw Error("Augšupielāde neizdevās. Pārbaudi CMS krātuves iestatījumus.");

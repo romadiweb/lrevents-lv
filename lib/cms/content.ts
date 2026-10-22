@@ -6,6 +6,7 @@ import { events as demoEvents, type MotorsportEvent } from "@/lib/events";
 import { sponsors as demoSponsors, type Sponsor } from "@/lib/sponsors";
 import { eventDocuments } from "@/lib/documents";
 import { team as defaultTeam } from "@/lib/contacts";
+import { defaultGallery, type GalleryImage } from "@/lib/gallery";
 
 type Row = Record<string, unknown>;
 async function read(table: string): Promise<Row[] | null> {
@@ -44,7 +45,19 @@ export async function getSponsors(): Promise<Sponsor[]> {
   "use cache";
   cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
   const rows = await read("cms_partners");
-  return rows === null ? demoSponsors : rows.filter(row => row.published === true).sort((a,b) => Number(a.sort_order)-Number(b.sort_order)).map(row => ({ id: text(row,"id"), label: text(row,"name"), logoSrc: text(row,"image"), href: text(row,"url") }));
+  return rows === null ? demoSponsors : rows.filter(row => row.published === true).sort((a,b) => Number(a.sort_order)-Number(b.sort_order)).map(row => ({ id: text(row,"id"), label: text(row,"name"), logoSrc: text(row,"image"), beltLogoSrc: text(row,"belt_image"), href: text(row,"url") }));
+}
+export async function getGallery(): Promise<GalleryImage[]> {
+  "use cache";
+  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  const [rows, categories] = await Promise.all([read("cms_gallery"), read("cms_categories")]);
+  if (rows === null) return defaultGallery;
+  return rows.filter(row => row.published === true)
+    .sort((a,b) => Number(a.sort_order)-Number(b.sort_order) || text(b,"created_at").localeCompare(text(a,"created_at")) || text(a,"id").localeCompare(text(b,"id")))
+    .map(row => {
+      const category = categories?.find(item => item.id === row.category_id);
+      return { id:text(row,"id"), src:text(row,"image"), alt:text(row,"alt") || text(row,"title") || "LR Events galerijas attēls", title:text(row,"title"), category:category ? text(category,"slug") : "", categoryLabel:category ? text(category,"name") : "", source:row.image_source === "url" ? "url" : "upload" };
+    });
 }
 export async function getTeam(): Promise<{ name: string; role: string; email: string; image?: string }[]> {
   "use cache";

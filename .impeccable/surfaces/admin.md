@@ -40,7 +40,16 @@ FORM: Flat, dense utility. No dashboard metrics, decorative photography or alter
 - Events: image, title, slug, venue/address, city, date, start time labeled as Latvian time, description, participant text and related-document checkboxes; publication. Draft documents remain identified as drafts in the picker; the empty picker directs the editor to Documents.
 - Users: first name, last name and email; a new account requires an initial 12–128 character password. Existing email is read-only. Access is activated/deactivated rather than deleting users; the current user cannot disable their own access.
 - Use the configured Latvian labels and native email, URL, date, time, number and select controls. Required fields carry an asterisk and native required constraints where supported. Article body remains a plain textarea.
-- Images accept PNG, JPG, WebP and AVIF up to 10 MB. Provide both drag-and-drop and a file-picker button, preview, replacement and removal. Upload communicates automatic resizing and WebP storage. Do not treat image removal as a completed save.
+- Images accept PNG, JPG, WebP and AVIF up to 10 MB; partner logos additionally accept SVG. SVG logos are rendered into lossless transparent WebP at logo resolution. Provide both drag-and-drop and a file-picker button, preview, replacement and removal. Upload communicates automatic resizing and WebP storage. Do not treat image removal as a completed save.
+- Partner-logo previews use a neutral grey gradient backing only inside the CMS so both black and white marks remain visible. Public logos retain transparency without a backing or dotted footer box.
+
+### Gallery editor extension
+
+- Galerija manages an image, optional title, optional shared category, required image description, numeric ordering and explicit publication. New records start unpublished with file upload selected. The table includes a 56px thumbnail and uses the description when a title is absent.
+- A labeled radio fieldset chooses exactly one image source: upload or image URL. Only the selected source control renders. Changing source clears the previous image value, so an old upload cannot silently remain selected as a URL or vice versa. Pending saves/uploads disable the containing fields.
+- Upload reuses the existing image picker/dropzone and conversion feedback. URL entry uses a required native URL field and asks for a direct public image address. Server validation requires HTTPS for URL mode and an accepted local or CMS-storage path for upload mode; the selected source is persisted with the record.
+- Public gallery content includes published records only, sorted by ascending ordering, then newest creation timestamp, then record ID. The homepage uses the first four in that order; drafts remain in administration.
+- This extension preserves the existing inline editor, status/error feedback, focus styling and native form semantics. It establishes no additional design tokens. Source evidence: content-editor.tsx, lib/cms/config.ts, lib/cms/content.ts and lib/cms/validation.ts; no live CMS tests were repeated by this documentation pass.
 
 ## Interaction and feedback
 
@@ -63,3 +72,5 @@ FORM: Flat, dense utility. No dashboard metrics, decorative photography or alter
 Documentation checked against PRODUCT.md, DESIGN.md, admin.css, content-editor.tsx, admin-shell.tsx, login-form.tsx, CMS config and route layouts. The implementation supplies the fields and behaviors above; this documentation pass did not repeat browser, database or authentication tests. Migration and live integration validation belong to the parent task's completion evidence.
 
 Observed drift retained without repair: the root DESIGN.md uses its preexisting section/frontmatter structure rather than the current Impeccable canonical document format. Local admin controls are denser than its general 48px control guidance; input corners are 2px rather than the general 4px input recommendation. These observations do not authorize a global design refresh. No system artifacts or application code are changed by this documentation pass.
+
+Partner logos: optional `belt_image` is uploaded in Partneri and used only in the homepage belt, falling back to the main `image`. Footer always uses the main logo. Both support SVG and transparent compressed WebP; grey preview backing is CMS-only. Migration `20261022123550_partner_belt_logo_field.sql` applied.
