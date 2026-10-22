@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight, MapPin } from "lucide-react";
-import { featuredEvent } from "@/lib/mock-events";
+import type { MotorsportEvent } from "@/lib/events";
 import { EventCountdown } from "./event-countdown";
 import "./hero-section.css";
 
-export function HeroSection() {
+export function HeroSection({ featuredEvent }: { featuredEvent?: MotorsportEvent }) {
   return (
     <section className="home-hero" aria-labelledby="home-hero-title">
       <Image
@@ -30,8 +30,8 @@ export function HeroSection() {
           </Link>
         </div>
 
-        <div className="next-event-panel">
-          <p className="next-event-label">Nākamais pasākums · demo saturs</p>
+        {featuredEvent ? <div className="next-event-panel">
+          <p className="next-event-label">Nākamais pasākums{featuredEvent.isDemo ? " · demo saturs" : ""}</p>
           <h2>{featuredEvent.title}</h2>
           <div className="next-event-meta">
             <MapPin size={16} aria-hidden="true" />
@@ -39,7 +39,7 @@ export function HeroSection() {
               {featuredEvent.city} · {featuredEvent.venue} · {featuredEvent.day}. {featuredEvent.month.toLowerCase()}.
             </span>
           </div>
-          <EventCountdown target={featuredEvent.startsAt} />
+          {featuredEvent.startsAt && <EventCountdown target={featuredEvent.startsAt} />}
           <div className="hero-event-actions">
             <Link className="primary-button hero-event-cta" href={featuredEvent.href}>
               Skatīt pasākumu
@@ -49,7 +49,7 @@ export function HeroSection() {
               Reģistrēties
             </Link>
           </div>
-        </div>
+        </div> : <div className="next-event-panel"><h2>Jauni pasākumi būs drīzumā</h2><Link className="hero-text-link" href="/pasakumi">Skatīt pasākumus<ArrowUpRight size={17} /></Link></div>}
       </div>
     </section>
   );

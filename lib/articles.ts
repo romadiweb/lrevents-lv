@@ -5,7 +5,7 @@ export const articleCategories = [
   { id: "dalibnieki", label: "Dalībnieki" },
 ] as const;
 
-export type ArticleCategory = typeof articleCategories[number]["id"];
+export type ArticleCategory = string;
 export type ArticlePreview = {
   id: string;
   title: string;
@@ -17,6 +17,7 @@ export type ArticlePreview = {
 export type Article = ArticlePreview & {
   publishedAt: string;
   category: ArticleCategory;
+  categoryLabel?: string;
   body: string[];
   isDemo: boolean;
 };
@@ -69,8 +70,8 @@ export function articleArchiveHref(category = "", page = 1) {
 }
 
 /** First page: 1 feature + 6 image tiles + 5 rows. Later pages: 5 rows only. */
-export function getArticleArchive(source: Article[], categoryInput = "", pageInput = "1") {
-  const category = getArticleCategory(categoryInput)?.id ?? "";
+export function getArticleArchive(source: Article[], categoryInput = "", pageInput = "1", categories: readonly { id: string }[] = articleCategories) {
+  const category = categories.find(item => item.id === categoryInput)?.id ?? "";
   const matching = source.filter((article) => !category || article.category === category)
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt) || a.id.localeCompare(b.id));
   const visualCount = Math.min(7, matching.length);

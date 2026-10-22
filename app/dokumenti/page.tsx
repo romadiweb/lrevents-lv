@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, FileText } from "lucide-react";
-import { eventDocuments } from "@/lib/documents";
+import { getDocuments } from "@/lib/cms/content";
+import { Suspense } from "react";
 import "./dokumenti.css";
 
 export const metadata: Metadata = {
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
     "LR Events autosprinta sezonas nolikumi, posmu nolikumi un oficiālie biļeteni.",
 };
 
-export default function DocumentsPage() {
+async function DocumentsContent() {
+  const eventDocuments = await getDocuments();
   return (
     <main id="main-content" className="documents-page site-content-page">
       <div className="container">
@@ -54,9 +56,9 @@ export default function DocumentsPage() {
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
-                      <span className="document-format" aria-label="PDF dokuments">
+                      <span className="document-format" aria-label={`${document.fileType} dokuments`}>
                         <FileText size={17} strokeWidth={1.7} aria-hidden="true" />
-                        PDF
+                        {document.fileType}
                       </span>
                     </span>
 
@@ -69,14 +71,14 @@ export default function DocumentsPage() {
                     </span>
 
                     <span className="document-card-bottom">
-                      {index === 0 ? (
+                      {document.category === "Sezonas nolikums" ? (
                         <span className="document-priority">Sezonas pamatdokuments</span>
                       ) : (
                         <span className="document-meta">Oficiāls dokuments</span>
                       )}
 
                       <span className="document-action">
-                        Atvērt PDF
+                        Atvērt {document.fileType}
                         <ArrowUpRight size={18} strokeWidth={1.8} aria-hidden="true" />
                         <span className="sr-only">(atveras jaunā cilnē)</span>
                       </span>
@@ -96,3 +98,4 @@ export default function DocumentsPage() {
     </main>
   );
 }
+export default function DocumentsPage() { return <Suspense fallback={<main className="documents-page container"><p role="status">Ielādē dokumentus…</p></main>}><DocumentsContent /></Suspense>; }

@@ -1,8 +1,9 @@
 import "./sponsor-grid.css";
-import { sponsors } from "@/lib/sponsors";
+import { getSponsors } from "@/lib/cms/content";
 import { SponsorMark } from "./sponsor-mark";
 
-export function SponsorGrid() {
+export async function SponsorGrid() {
+  const sponsors = await getSponsors();
   return (
     <section
       className="footer-sponsors"

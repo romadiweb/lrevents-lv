@@ -5,6 +5,8 @@ import "@/components/layout/dialog.css";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ScrollToTop } from "@/components/layout/scroll-to-top";
+import { SiteChrome } from "@/components/layout/site-chrome";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning>
-        <ScrollToTop />
-        <SiteHeader />
-        {children}
-        <SiteFooter />
+        <Suspense fallback={null}><SiteChrome header={<SiteHeader />} footer={<Suspense fallback={null}><SiteFooter /></Suspense>} scroll={<ScrollToTop />}>{children}</SiteChrome></Suspense>
       </body>
     </html>
   );

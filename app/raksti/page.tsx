@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment, Suspense } from "react";
 import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
-import { articles, articleCategories, articleArchiveHref, getArticleArchive, getArticleCategory, type Article } from "@/lib/articles";
+import { articleArchiveHref, getArticleArchive, getArticleCategory, type Article } from "@/lib/articles";
+import { getArticles, getCategories } from "@/lib/cms/content";
 import "./raksti.css";
 
 export const metadata: Metadata = {
@@ -14,16 +15,18 @@ export const metadata: Metadata = {
 type ArchivePageProps = { searchParams: Promise<{ kategorija?: string | string[]; lapa?: string | string[] }> };
 
 function ArticleMeta({ article }: { article: Article }) {
-  return <span className="news-meta"><span>{getArticleCategory(article.category)?.label}</span><span aria-hidden="true">/</span><time dateTime={article.publishedAt}>{article.date}</time></span>;
+  return <span className="news-meta"><span>{article.categoryLabel ?? getArticleCategory(article.category)?.label}</span><span aria-hidden="true">/</span><time dateTime={article.publishedAt}>{article.date}</time></span>;
 }
 
 async function ArticleArchive({ searchParams }: ArchivePageProps) {
   const params = await searchParams;
-  const archive = getArticleArchive(articles, typeof params.kategorija === "string" ? params.kategorija : "", typeof params.lapa === "string" ? params.lapa : "1");
+  const [articles, articleCategories] = await Promise.all([getArticles(), getCategories()]);
+  const archive = getArticleArchive(articles, typeof params.kategorija === "string" ? params.kategorija : "", typeof params.lapa === "string" ? params.lapa : "1", articleCategories);
   const { featured, tiles, rows, category, page, totalPages } = archive;
   const pageNumbers = [...new Set([1, page - 1, page, page + 1, totalPages])].filter((number) => number >= 1 && number <= totalPages).sort((a, b) => a - b);
 
   return <>
+    {articles.some(article => article.isDemo) && <p className="news-demo-note">Paraugraksti — virsraksti, datumi un saturs ir ilustratīvi.</p>}
     <form action="/raksti" className="news-toolbar">
       <div className="news-filter">
         <label htmlFor="news-category">Kategorija</label>
@@ -97,7 +100,6 @@ export default function ArticlesPage(props: ArchivePageProps) {
     <div className="container">
       <nav className="news-breadcrumb" aria-label="Atrašanās vieta"><Link href="/">Sākums</Link><span aria-hidden="true">/</span><span aria-current="page">Raksti</span></nav>
       <header className="news-page-heading"><h1>Raksti</h1><p>No trases un aizkulisēm.<br />Stāsti, kas turpina sacensību dienu.</p></header>
-      <p className="news-demo-note">Paraugraksti — virsraksti, datumi un saturs ir ilustratīvi.</p>
       <Suspense fallback={<p className="news-loading" role="status">Ielādē rakstus…</p>}><ArticleArchive {...props} /></Suspense>
     </div>
   </main>;

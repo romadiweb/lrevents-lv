@@ -5,20 +5,23 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock3, FileText, MapPin } from "lucide-react";
-import { events, formatEventDate, rigaDate } from "@/lib/events";
+import { events as demoEvents, formatEventDate, rigaDate } from "@/lib/events";
+import { getEvents } from "@/lib/cms/content";
 import { StandingsSection } from "@/components/home/standings-section";
 import "../pasakumi.css";
 
 type EventPageProps = { params: Promise<{ slug: string }> };
-export function generateStaticParams() { return events.map((event) => ({ slug: event.id })); }
+export function generateStaticParams() { return demoEvents.map((event) => ({ slug: event.id })); }
 export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
   const { slug } = await params;
+  const events = await getEvents();
   const event = events.find((item) => item.id === slug);
   return { title: event ? `${event.title} — LR Events` : "Pasākums nav atrasts — LR Events", description: event?.summary, robots: event?.isDemo ? { index: false } : undefined };
 }
 
 async function EventContent({ params }: EventPageProps) {
   const { slug } = await params;
+  const events = await getEvents();
   const event = events.find((item) => item.id === slug);
   if (!event) notFound();
   await connection();
@@ -46,7 +49,7 @@ async function EventContent({ params }: EventPageProps) {
         <div className="event-venue-grid"><div className="event-venue-copy"><h3>{event.venue}</h3><p>{event.summary}</p><p>{event.venueDescription}</p>
           <dl className="event-facts"><div><dt>Datums</dt><dd>{formatEventDate(event.date)}</dd></div><div><dt>Norise</dt><dd>{event.startLabel}</dd></div><div><dt>Pilsēta</dt><dd>{event.city}</dd></div></dl>
           {event.directionsQuery ? <a className="event-inline-link" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.directionsQuery)}`} target="_blank" rel="noopener noreferrer">Atvērt norises vietu kartē<ArrowUpRight size={17} aria-hidden="true" /><span className="sr-only">(jaunā cilnē)</span></a> : <p className="event-pending"><MapPin size={17} aria-hidden="true" />Precīza adrese tiks publicēta vēlāk.</p>}
-        </div><figure className="event-venue-photo"><div><Image src={event.venueImage} alt="Autosporta norises ilustratīvs attēls" fill sizes="(max-width: 767px) 100vw, 55vw" /></div><figcaption>Ilustratīvs attēls. Trases shēma un piekļuves informācija meklējama nolikumā.</figcaption></figure></div>
+        </div><figure className="event-venue-photo"><div><Image src={event.venueImage} alt={event.title} fill sizes="(max-width: 767px) 100vw, 55vw" /></div>{event.isDemo && <figcaption>Ilustratīvs attēls. Trases shēma un piekļuves informācija meklējama nolikumā.</figcaption>}</figure></div>
       </section>
 
       <div className="event-utility-grid">
@@ -54,6 +57,7 @@ async function EventContent({ params }: EventPageProps) {
           {event.schedule.length > 0 ? <><ol>{event.schedule.map((item) => <li key={`${item.time}-${item.title}`}><span><Clock3 size={16} aria-hidden="true" />{item.time}</span><strong>{item.title}</strong></li>)}</ol><p>{hasEnded ? "Pasākums ir noslēdzies." : "Pilna programma un dalībnieku ierašanās laiks tiks precizēts nolikumā."}</p></> : <p>{hasEnded ? "Šī pasākuma programma nav pievienota." : "Programma un sākuma laiks tiks publicēts pēc apstiprināšanas."}</p>}
         </section>
         <section className="event-participation" id="daliba" aria-labelledby="event-participation-title"><h2 id="event-participation-title">Dalībniekiem</h2>
+          {event.participantDescription && <p style={{ whiteSpace: "pre-line" }}>{event.participantDescription}</p>}
           <p>{hasEnded ? "Pasākums ir noslēdzies. Reģistrācija vairs nav pieejama." : event.registrationHref ? "Pirms reģistrācijas iepazīsties ar pasākuma nolikumu un dalības nosacījumiem." : "Reģistrācijas saite un dalības nosacījumi tiks publicēti kopā ar pasākuma nolikumu."}</p>
           {!hasEnded && event.registrationHref ? <a className="event-inline-link" href={event.registrationHref}>Reģistrēties pasākumam<ArrowRight size={17} aria-hidden="true" /></a> : <Link className="event-inline-link" href="/dalibniekiem">Informācija par dalību<ArrowRight size={17} aria-hidden="true" /></Link>}
         </section>

@@ -4,7 +4,8 @@ import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
-import { events, rigaDate } from "@/lib/events";
+import { rigaDate } from "@/lib/events";
+import { getEvents } from "@/lib/cms/content";
 import { EventCard } from "@/components/events/event-card";
 import { EventCalendar } from "@/components/events/event-calendar";
 import "./pasakumi.css";
@@ -16,12 +17,14 @@ async function EventDirectory({ searchParams }: EventsPageProps) {
   await connection();
   const today = rigaDate(new Date());
   const params = await searchParams;
+  const events = await getEvents();
   if (params.skats === "arhivs") redirect("/pasakumi/arhivs");
   const listed = events.filter((event) => (event.endDate ?? event.date) >= today)
     .sort((a, b) => a.date.localeCompare(b.date));
   const calendarEvents = events.map(({ id, title, href, date, endDate, city }) => ({ id, title, href, date, endDate, city }));
 
   return <>
+    {events.some(event => event.isDemo) && <p className="events-demo-note">Maketa saturs — pasākumu datumi un norises informācija ir ilustratīva.</p>}
     <EventCalendar events={calendarEvents} today={today} />
     <section className="events-directory" aria-labelledby="events-list-title">
       <div className="events-directory-heading"><h2 id="events-list-title">Tuvākie pasākumi</h2><span>{listed.length} {listed.length === 1 ? "pasākums" : "pasākumi"}</span></div>
@@ -39,7 +42,6 @@ export default function EventsPage(props: EventsPageProps) {
   return <main className="events-page site-content-page" id="main-content"><div className="container">
     <nav className="events-breadcrumb" aria-label="Atrašanās vieta"><Link href="/">Sākums</Link><span aria-hidden="true">/</span><span aria-current="page">Pasākumi</span></nav>
     <header className="events-page-heading"><h1>Pasākumi</h1><p>Atrodi savu nākamo startu.<br />Kalendārs, norises vietas un viss par dalību.</p></header>
-    <p className="events-demo-note">Maketa saturs — pasākumu datumi un norises informācija ir ilustratīva.</p>
     <Suspense fallback={<p className="events-loading" role="status">Ielādē pasākumu kalendāru…</p>}><EventDirectory {...props} /></Suspense>
   </div></main>;
 }

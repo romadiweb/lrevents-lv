@@ -12,7 +12,7 @@ Latvian-language LR Events website presenting motorsport events, participant inf
 
 ## Capabilities and Constraints
 
-- Articles will later come from a CMS. Current article content is explicitly illustrative.
+- A protected Supabase CMS manages team members, articles, categories, partners, documents, events and users. Public pages read published CMS records; local illustrative content is an availability fallback only.
 - The article archive uses category filtering only, without a race or year selector.
 - The first archive page has a featured story, image tiles, and five older article rows. Subsequent pages show article rows only.
 - Preserve the established LR Events identity and colors when adapting supplied visual references.
@@ -23,4 +23,4 @@ Latvian-language LR Events website presenting motorsport events, participant inf
 
 ## Evidence on Hand
 
-The repository contains the LR Events brand, motorsport photographs, mock event and article previews, and DESIGN.md. The user supplied article-archive and podium layout references. Real editorial copy, publication history, CMS article schema, and team car assignments remain unconfirmed.
+The repository contains the LR Events brand, motorsport photographs, local fallback previews, and DESIGN.md. The user supplied article-archive and podium layout references. The Supabase CMS schema is implemented; real editorial copy and team car assignments still need to be entered by the owner.

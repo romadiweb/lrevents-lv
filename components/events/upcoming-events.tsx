@@ -8,10 +8,11 @@ export function UpcomingEvents({ events }: { events: EventPreview[] }) {
       <div className="container">
         <div className="upcoming-heading">
           <h2 id="upcoming-title">Tuvākie pasākumi</h2>
-          <p>Datumi šobrīd ir maketa saturs un vēlāk tiks pārvaldīti CMS.</p>
+          <p>Atrodi savu nākamo startu.</p>
         </div>
 
         <div className="event-card-grid">
+          {events.length === 0 && <p>Jauni pasākumi tiks izziņoti drīzumā.</p>}
           {events.map((event) => <EventCard event={event} key={event.id} />)}
         </div>
       </div>

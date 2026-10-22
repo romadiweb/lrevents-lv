@@ -20,6 +20,7 @@ export type MotorsportEvent = EventPreview & CalendarEvent & {
   startsAt?: string;
   summary: string;
   venueDescription: string;
+  participantDescription?: string;
   venueImage: string;
   directionsQuery?: string;
   registrationHref?: string;
