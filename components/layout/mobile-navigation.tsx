@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
-import { navigation, registrationLink } from "@/lib/navigation";
+import { navigation, membershipLink } from "@/lib/navigation";
 import { Brand } from "./brand";
 import { SocialLinks } from "./social-links";
 import { CookieSettings } from "./cookie-settings";
+import { MembershipLink } from "./membership-link";
 import "./mobile-navigation.css";
 
 export function MobileNavigation() {
@@ -49,10 +50,10 @@ export function MobileNavigation() {
               </ul>
             </nav>
             <div className="mobile-menu-bottom">
-              <Link className="primary-button mobile-register" href={registrationLink.href} onClick={() => changeOpen(false)}>
-                {registrationLink.label}
+              <MembershipLink className="primary-button mobile-register" onClick={() => changeOpen(false)}>
+                {membershipLink.label}
                 <ArrowUpRight size={16} aria-hidden="true" />
-              </Link>
+              </MembershipLink>
               <SocialLinks />
               <p className="mobile-menu-copyright">© 2026 LR Events</p>
               <CookieSettings />

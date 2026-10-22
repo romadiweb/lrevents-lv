@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { registrationLink } from "@/lib/navigation";
+import { membershipLink } from "@/lib/navigation";
 import { SocialLinks } from "./social-links";
 import { Brand } from "./brand";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
+import { MembershipLink } from "./membership-link";
 import "./site-header.css";
 export function SiteHeader() {
   const [compact, setCompact] = useState(false);
@@ -35,13 +36,12 @@ export function SiteHeader() {
               <Brand />
               <div className="main-header-actions">
                 <DesktopNavigation />
-                <Link
+                <MembershipLink
                   className="primary-button header-cta"
-                  href={registrationLink.href}
                 >
-                  {registrationLink.label}
+                  {membershipLink.label}
                   <ArrowUpRight size={16} aria-hidden="true" />
-                </Link>
+                </MembershipLink>
                 <MobileNavigation />
               </div>
             </div>

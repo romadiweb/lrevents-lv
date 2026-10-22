@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, Trophy } from "lucide-react";
 import { teamStandings } from "@/lib/mock-standings";
+import { getCarBrand } from "@/lib/car-brands";
 import "./standings-section.css";
 
 export function StandingsSection() {
@@ -28,44 +29,55 @@ export function StandingsSection() {
       </div>
 
       <div className="container standings-podium" id="standings-podium">
-        {podiumOrder.map((team) => (
-          <article className={`standing-card standing-card--rank-${team.rank}`} key={team.name}>
-            <div className="standing-rank" aria-label={`${team.rank}. vieta`}>
-              {team.rank}
-            </div>
-
-            <div className="standing-monogram" aria-hidden="true">
-              {team.name.slice(0, 3)}
-            </div>
-
-            <div className="standing-team">
-              <h3>{team.name}</h3>
-              <div className="standing-points">
-                <strong>{team.points}</strong>
-                <span>punkti kopā</span>
+        {podiumOrder.map((team) => {
+          const carBrand = getCarBrand(team.carBrand);
+          return (
+            <article className={`standing-card standing-card--rank-${team.rank}`} key={team.name}>
+              <div className="standing-rank" aria-label={`${team.rank}. vieta`}>
+                {team.rank}
               </div>
-            </div>
 
-            <div className="standing-rounds" aria-label="Punkti katrā posmā">
-              {team.rounds.map((points, index) => (
-                <span key={`${team.name}-${index}`}>
-                  <small>{index + 1}. posms</small>
-                  <strong>{points ?? "—"}</strong>
-                </span>
-              ))}
-            </div>
+              {carBrand && (
+                <div className="standing-brand" aria-hidden="true">
+                  <Image src={carBrand.logo} alt="" fill sizes="180px" />
+                </div>
+              )}
 
-            <ul className="standing-members" aria-label={`${team.name} komandas dalībnieki`}>
-              {team.members.map((member) => (
-                <li key={member}>{member}</li>
-              ))}
-            </ul>
-          </article>
-        ))}
+              <div className="standing-team">
+                <h3>{team.name}</h3>
+                <div className="standing-points">
+                  <strong>{team.points}</strong>
+                  <span>punkti kopā</span>
+                </div>
+              </div>
+
+              <div className="standing-rounds" aria-label="Punkti katrā posmā">
+                {team.rounds.map((points, index) => (
+                  <span key={`${team.name}-${index}`}>
+                    <small>{index + 1}. posms</small>
+                    <strong>{points ?? "—"}</strong>
+                  </span>
+                ))}
+              </div>
+
+              <ul className="standing-members" aria-label={`${team.name} komandas dalībnieki`}>
+                {team.members.map((member) => (
+                  <li key={member}>
+                    <svg className="standing-driver" viewBox="0 0 40 44" fill="currentColor" aria-hidden="true" focusable="false">
+                      <circle cx="20" cy="12" r="8" />
+                      <path d="M3 44v-7c0-8 7.6-13 17-13s17 5 17 13v7H3Z" />
+                    </svg>
+                    <span>{member}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          );
+        })}
       </div>
 
       <p className="container standings-note">
-        Maketa dati no pašreizējās komandu kopvērtējuma tabulas; vēlāk pārvaldāmi CMS.
+        Maketa dati no pašreizējās komandu kopvērtējuma tabulas; vēlāk pārvaldāmi CMS. Automašīnu markas ir ilustratīvas.
       </p>
     </section>
   );

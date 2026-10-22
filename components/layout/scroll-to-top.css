@@ -1,0 +1,70 @@
+/* Fixed mechanical scroll-to-top control; designed for both off-white and Noir surfaces. */
+.scroll-top-button {
+  position: fixed;
+  right: max(22px, env(safe-area-inset-right));
+  bottom: calc(22px + env(safe-area-inset-bottom));
+  z-index: 60;
+  display: block;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  appearance: none;
+  background: transparent;
+  box-shadow: 0 6px 9px rgb(0 0 0 / 22%);
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 260ms ease,
+    outline-color 180ms ease,
+    visibility 260ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-top-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.scroll-top-image {
+  object-fit: contain;
+  user-select: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .scroll-top-visible:hover {
+    outline-color: #810100;
+  }
+}
+
+.scroll-top-visible:active {
+  outline-color: #630000;
+}
+
+.scroll-top-button:focus-visible {
+  outline: 2px solid #810100;
+  outline-offset: 4px;
+}
+
+@media (max-width: 767px) {
+  .scroll-top-button {
+    width: 56px;
+    height: 56px;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top-button,
+  .scroll-top-image {
+    transition: none;
+  }
+}
+

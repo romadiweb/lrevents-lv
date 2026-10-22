@@ -29,4 +29,4 @@ export const navigation: NavItem[] = [
   ] },
   { label: "Kontakti", href: "/kontakti" },
 ];
-export const registrationLink: NavLink = { label: "Reģistrēties", href: "/dalibniekiem" };
+export const membershipLink: NavLink = { label: "Pievienojies", href: "/biedrs#pieteiksanas" };

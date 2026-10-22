@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight, Check, ShieldCheck } from "lucide-react";
+import { scrollToMembershipApplication } from "@/lib/membership-scroll";
 import "./biedrs.css";
 
 const reasons = [
@@ -28,6 +29,12 @@ type SubmissionState = "idle" | "sending" | "success" | "error";
 export default function MembershipPage() {
   const [submission, setSubmission] = useState<SubmissionState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (["#pieteiksanas", "#pieteikums"].includes(window.location.hash)) {
+      void scrollToMembershipApplication();
+    }
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -73,7 +80,7 @@ export default function MembershipPage() {
           <h1 id="member-title">Kļūsti par <em>savējo.</em></h1>
           <div className="member-hero-bottom">
             <p>Autosports sākas ar cilvēkiem. Pievienojies LR Events kopienai un kļūsti par daļu no notikumiem, kas mūs vieno.</p>
-            <a className="member-inline-link" href="#pieteikums">Aizpildīt pieteikumu <ArrowDownRight size={19} aria-hidden="true" /></a>
+            <a className="member-inline-link" href="#pieteiksanas">Aizpildīt pieteikumu <ArrowDownRight size={19} aria-hidden="true" /></a>
           </div>
         </div>
         <div className="member-hero-media" role="img" aria-label="LR Events autosporta atmosfēras fotogrāfija">
@@ -123,7 +130,8 @@ export default function MembershipPage() {
         </div>
       </section>
 
-      <section id="pieteikums" className="member-application member-section" aria-labelledby="member-form-title">
+      <section id="pieteiksanas" className="member-application member-section" aria-labelledby="member-form-title">
+        <span id="pieteikums" className="member-legacy-anchor" aria-hidden="true" />
         <div className="member-container member-application-layout">
           <aside className="member-application-intro">
             <p className="member-overline">PIETEIKŠANĀS</p>

@@ -67,7 +67,8 @@
 .member-process-step p { max-width: 260px; margin-top: 12px; font-size: 14px; line-height: 1.65; color: #aaa9a6; }
 
 /* Form */
-.member-application { scroll-margin-top: 100px; }
+.member-application { position: relative; scroll-margin-top: 20px; }
+.member-legacy-anchor { position: absolute; top: 0; scroll-margin-top: 20px; }
 .member-application-layout { display: grid; grid-template-columns: minmax(260px, .9fr) minmax(0, 1.1fr); gap: clamp(48px, 7vw, 120px); align-items: start; }
 .member-application-intro { position: sticky; top: 120px; }
 .member-application-intro h2 { margin-top: 28px; }
