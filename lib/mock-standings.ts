@@ -4,7 +4,7 @@ export type TeamStanding = {
   rank: number;
   name: string;
   points: number;
-  rounds: number[];
+  rounds: (number | null)[];
   members: string[];
   carBrand?: CarBrandId;
 };

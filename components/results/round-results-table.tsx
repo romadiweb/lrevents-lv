@@ -34,7 +34,7 @@ export function RoundResultsTable({
     round.id,
   );
   const runCount = Math.max(
-    round.runCount ?? 3,
+    round.runCount ?? 0,
     ...rows.flatMap((e) =>
       (e.roundRuns?.[round.id] ?? []).map((run) => run.runNumber),
     ),
@@ -85,7 +85,7 @@ export function RoundResultsTable({
             {rows.map((entry, index) => (
               <tr key={entry.id}>
                 <td className="round-results-place">
-                  {position(entry, index)}
+                  {entry.roundStatuses?.[round.id] && entry.roundStatuses[round.id] !== "OK" ? entry.roundStatuses[round.id] : position(entry, index)}
                 </td>
                 <th scope="row" className="round-results-driver">
                   {entry.driver}
@@ -125,7 +125,7 @@ export function RoundResultsTable({
           <details key={entry.id} className="round-results-mobile-entry">
             <summary>
               <span className="round-results-place">
-                {position(entry, index)}
+                {entry.roundStatuses?.[round.id] && entry.roundStatuses[round.id] !== "OK" ? entry.roundStatuses[round.id] : position(entry, index)}
               </span>
               <span className="round-results-person">
                 <strong>{entry.driver}</strong>

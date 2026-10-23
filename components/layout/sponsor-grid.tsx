@@ -9,8 +9,9 @@ export async function SponsorGrid() {
       className="footer-sponsors"
       aria-label="Atbalstītāju logotipu vietas"
     >
+      {sponsors.filter(sponsor => sponsor.mainPartner).map(sponsor => <div className="sponsor-main" key={sponsor.id}><p>Galvenais partneris</p><SponsorMark sponsor={sponsor}/></div>)}
       <ul className="sponsor-grid">
-        {sponsors.map((sponsor) => (
+        {sponsors.filter(sponsor => !sponsor.mainPartner).map((sponsor) => (
           <li className="sponsor-placeholder" key={sponsor.id}>
             <SponsorMark sponsor={sponsor} />
           </li>

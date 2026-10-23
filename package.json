@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "test:cms": "node scripts/test-cms.mjs",
-    "test:cms:live": "node scripts/test-cms-live.mjs --run"
+    "test:cms:live": "node scripts/test-cms-live.mjs --run",
+    "test:results": "node scripts/test-results.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.3.1",

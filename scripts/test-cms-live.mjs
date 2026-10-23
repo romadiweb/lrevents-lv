@@ -74,12 +74,40 @@ try{
   assert.ok(beltHtml.includes(encodeURIComponent(svgResult.url)));
   assert.ok(footerHtml.includes(encodeURIComponent(uploaded.url)));
   assert.ok(!footerHtml.includes(encodeURIComponent(svgResult.url)));
+  const existingMain=await admin.from('cms_partners').select('id').eq('main_partner',true);assert.ifError(existingMain.error);
+  if(!existingMain.data.length){await save('partneri',{...partner,belt_image:svgResult.url,published:true,main_partner:true});const mainHtml=await(await fetch(base)).text();assert.ok(mainHtml.includes('Galvenais partneris'));}
   await save('partneri',{...partner,belt_image:'',published:true});
   const fallbackHtml=await(await fetch(base)).text();
   const fallbackBelt=fallbackHtml.match(/<section class="sponsor-belt"[\s\S]*?<\/section>/)?.[0] || '';
+  if(!fallbackBelt.includes(encodeURIComponent(uploaded.url))){const {writeFile}=await import('node:fs/promises');await writeFile('.next/logo-test-failure.html',fallbackHtml);}
   assert.ok(fallbackBelt.includes(encodeURIComponent(uploaded.url)));
   assert.ok(!fallbackBelt.includes(encodeURIComponent(svgResult.url)));
   assert.equal((await anon.from('cms_partners').select('id').eq('id',partner.id)).data.length,1);
+  const seasonPayload={name:title,year:2026,archived:false,scoring_mode:'position',points_scale:'10,8,6',best_rounds:0,team_best:0,published:true};
+  await save('sezonas',seasonPayload);const season=await find('cms_seasons','name',title);
+  await save('klases',{name:title,season_id:season.id,sort_order:0,published:true});const racingClass=await find('cms_classes','name',title);
+  await save('posmi',{name:title,season_id:season.id,event_date:'2026-10-23',event_id:'',sort_order:0,published:true});const round=await find('cms_rounds','name',title);
+  await save('komandas',{name:title,car_brand:'bmw',published:true});const racingTeam=await find('cms_racing_teams','name',title);
+  await save('dalibnieki',{first_name:title,last_name:'Test',car:'BMW',team_id:racingTeam.id,published:true});const participant=await find('cms_participants','first_name',title);
+  await save('starti',{season_id:season.id,class_id:racingClass.id,participant_id:participant.id,team_id:racingTeam.id,start_number:'77',car:'BMW',published:true});const entry=await find('cms_entries','participant_id',participant.id);
+  await save('rezultati',{season_id:season.id,round_id:round.id,entry_id:entry.id,position:1,points:'',status:'OK',notes:'Integration',published:false});const score=await find('cms_results','entry_id',entry.id);
+  assert.equal((await anon.from('cms_results').select('id').eq('id',score.id)).data.length,0);
+  await save('rezultati',{...score,published:true});
+  await save('braucieni',{result_id:score.id,run_number:1,time_ms:120000,penalty_ms:500,result_ms:'',points:10,status:'OK',published:true});await find('cms_runs','result_id',score.id);
+  for(const path of ['/rezultati','/rezultati/kopvertejums','/rezultati/live']){const response=await fetch(base+path);assert.equal(response.status,200);assert.ok((await response.text()).includes(title),`${path} missing live result`);}
+  await save('sezonas',{...season,...seasonPayload,archived:true});
+  assert.ok((await(await fetch(base+'/rezultati/arhivs')).text()).includes(title));
+  const activeResultsHtml=(await(await fetch(base+'/rezultati')).text()).match(/<main[\s\S]*?<\/main>/)?.[0]||'';assert.ok(!activeResultsHtml.includes(title),'archived season should leave active results');
+  // A score must not attach an entry to a different season's round.
+  await save('sezonas',{...seasonPayload,name:title+' other'});const otherSeason=await find('cms_seasons','name',title+' other');
+  assert.equal((await request('rezultati',{...score,season_id:otherSeason.id})).status,400);
+  const passwordRequest=async(payload,authenticated=true,origin=base)=>fetch(base+'/api/admin/password',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json',...(authenticated?{Cookie:cookie()}:{})},body:JSON.stringify(payload)});
+  assert.equal((await passwordRequest({password:'New-pass-12345'},false)).status,401);
+  assert.equal((await passwordRequest({password:'New-pass-12345'},true,'https://example.test')).status,403);
+  assert.equal((await passwordRequest({password:'short'})).status,400);
+  const newPassword=randomBytes(18).toString('base64url');assert.equal((await passwordRequest({password:newPassword})).status,200);
+  const verifyLogin=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});const changed=await verifyLogin.auth.signInWithPassword({email:testerEmail,password:newPassword});assert.ifError(changed.error);await verifyLogin.auth.signOut({scope:'local'});
+  const refreshed=await client.auth.signInWithPassword({email:testerEmail,password:newPassword});assert.ifError(refreshed.error);
   await save('raksti',{title,slug:`cms-check-${suffix}`,image:uploaded.url,category_id:category.id,body:'CMS pārbaudes teksts.\n\nOtrā rindkopa.',summary:'Automātiska CMS pārbaude.',published:false});
   const article=await find('cms_articles','slug',`cms-check-${suffix}`);
   assert.equal((await anon.from('cms_articles').select('id').eq('id',article.id)).data.length,0);
@@ -100,11 +128,11 @@ try{
   const user=await find('cms_users','email',`cms-${suffix}@example.test`);
   await save('lietotaji',{...user,active:false});
   assert.equal((await admin.from('cms_users').select('active').eq('id',user.id).single()).data.active,false);
-  console.log('Live CMS integration passed: authentication, CSRF, access protection, uploads/compression, categories, drafts/publication, dynamic article/event pages, related documents, partner links, team records, and user creation/deactivation.');
+  console.log('Live CMS integration passed: authentication, CSRF, access protection, uploads/compression, categories, drafts/publication, dynamic article/event pages, related documents, partner links, team records, results/scoring publication and archive, direct password changes, and user creation/deactivation.');
 }finally{
-  for(const [table,id] of ids.reverse()){
+  for(const [table,id] of ids.reverse().sort((a,b)=>["cms_runs","cms_results","cms_entries","cms_participants","cms_racing_teams","cms_rounds","cms_classes","cms_seasons"].indexOf(a[0])-["cms_runs","cms_results","cms_entries","cms_participants","cms_racing_teams","cms_rounds","cms_classes","cms_seasons"].indexOf(b[0]))){
     if(table==='cms_users'){await admin.from(table).delete().eq('id',id);await admin.auth.admin.deleteUser(id);}
-    else {const section={cms_team:'komanda',cms_events:'pasakumi',cms_documents:'dokumenti',cms_articles:'raksti',cms_partners:'partneri',cms_categories:'kategorijas',cms_gallery:'galerija'}[table];await request(section,{id,action:'delete'});await admin.from(table).delete().eq('id',id);}
+    else {const section={cms_team:'komanda',cms_events:'pasakumi',cms_documents:'dokumenti',cms_articles:'raksti',cms_partners:'partneri',cms_categories:'kategorijas',cms_gallery:'galerija',cms_seasons:'sezonas',cms_classes:'klases',cms_rounds:'posmi',cms_racing_teams:'komandas',cms_participants:'dalibnieki',cms_entries:'starti',cms_results:'rezultati',cms_runs:'braucieni'}[table];await request(section,{id,action:'delete'});await admin.from(table).delete().eq('id',id);}
   }
   if(media.length)await admin.storage.from('cms-media').remove(media);
   await client.auth.signOut({scope:'local'});

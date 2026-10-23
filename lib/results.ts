@@ -26,6 +26,9 @@ export type ResultsEntry = {
   driver: string;
   car?: string;
   startNumber?: string;
+  teamId?: string;
+  teamName?: string;
+  roundStatuses?: Record<string,string>;
   roundRuns?: Record<string, ResultsRun[]>;
   /** null means no result; zero is a valid recorded score. */
   scores: Record<string, number | null>;
@@ -56,7 +59,7 @@ export function pointsFor(entry: ResultsEntry, roundId: string): number | null {
 export function hasRoundResult(entry: ResultsEntry, roundId: string): boolean {
   return (
     pointsFor(entry, roundId) !== null ||
-    Boolean(entry.roundRuns?.[roundId]?.length)
+    Boolean(entry.roundRuns?.[roundId]?.length) || Boolean(entry.roundStatuses?.[roundId])
   );
 }
 

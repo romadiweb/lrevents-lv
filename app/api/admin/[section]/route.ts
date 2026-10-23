@@ -57,7 +57,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       } else {
         const query = id ? client.from(sections[section].table).update(record).eq("id", id) : client.from(sections[section].table).insert(record);
         const { error } = await query.select("id").single();
-        if (error) return fail(databaseMessage(error.code));
+        if (error) return fail(section === "partneri" && error.code === "23505" && record.main_partner ? "Galvenais partneris jau izvēlēts. Vispirms noņem atzīmi iepriekšējam partnerim." : databaseMessage(error.code));
       }
     }
     revalidateTag("cms-content", { expire: 0 });

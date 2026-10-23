@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { ArrowRight, Trophy } from "lucide-react";
-import { teamStandings } from "@/lib/mock-standings";
+import { getResultsContent } from "@/lib/cms/results-content";
 import { getCarBrand } from "@/lib/car-brands";
 import "./standings-section.css";
 
-export function StandingsSection() {
-  const podiumOrder = [teamStandings[1], teamStandings[0], teamStandings[2]];
+export async function StandingsSection() {
+  const results=await getResultsContent();
+  const season=results.current[0];
+  const teamStandings=season?results.teams[season.id]||[]:[];
+  const podiumOrder = [teamStandings[1], teamStandings[0], teamStandings[2]].filter(team=>!!team);
 
   return (
     <section className="standings-section" id="standings" aria-labelledby="standings-title">
@@ -18,17 +21,18 @@ export function StandingsSection() {
         <div>
           <p className="standings-status">
             <Trophy size={15} aria-hidden="true" />
-            Pēc pieciem posmiem
+            {season ? `${season.rounds.length} posmi sezonā` : "Sezonas rezultāti"}
           </p>
-          <h2 id="standings-title">Komandu kopvērtējums 2026</h2>
+          <h2 id="standings-title">Komandu kopvērtējums {season?.year ?? ""}</h2>
         </div>
 
-        <a className="standings-link" href="#standings-podium">
+        <a className="standings-link" href="/rezultati/kopvertejums">
           Skatīt kopvērtējumu <ArrowRight size={18} aria-hidden="true" />
         </a>
       </div>
 
       <div className="container standings-podium" id="standings-podium">
+        {!podiumOrder.length&&<p>Komandu rezultāti vēl nav publicēti.</p>}
         {podiumOrder.map((team) => {
           const carBrand = getCarBrand(team.carBrand);
           return (
@@ -77,7 +81,7 @@ export function StandingsSection() {
       </div>
 
       <p className="container standings-note">
-        Maketa dati no pašreizējās komandu kopvērtējuma tabulas; vēlāk pārvaldāmi CMS. Automašīnu markas ir ilustratīvas.
+        Punkti no publicētajiem sezonas rezultātiem. Vienāda punktu skaita gadījumā salīdzina augstāko vietu skaitu posmos.
       </p>
     </section>
   );

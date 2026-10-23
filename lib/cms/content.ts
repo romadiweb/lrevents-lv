@@ -9,10 +9,8 @@ import { team as defaultTeam } from "@/lib/contacts";
 import { defaultGallery, type GalleryImage } from "@/lib/gallery";
 
 type Row = Record<string, unknown>;
-async function read(table: string): Promise<Row[] | null> {
-  "use cache";
-  cacheTag("cms-content");
-  cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+// Cache complete content adapters, so an invalidated adapter never reuses an older nested snapshot.
+export async function read(table: string): Promise<Row[] | null> {
   const client = createContentClient();
   if (!client) return null;
   try {
@@ -45,7 +43,7 @@ export async function getSponsors(): Promise<Sponsor[]> {
   "use cache";
   cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
   const rows = await read("cms_partners");
-  return rows === null ? demoSponsors : rows.filter(row => row.published === true).sort((a,b) => Number(a.sort_order)-Number(b.sort_order)).map(row => ({ id: text(row,"id"), label: text(row,"name"), logoSrc: text(row,"image"), beltLogoSrc: text(row,"belt_image"), href: text(row,"url") }));
+  return rows === null ? demoSponsors : rows.filter(row => row.published === true).sort((a,b) => Number(a.sort_order)-Number(b.sort_order)).map(row => ({ id: text(row,"id"), label: text(row,"name"), logoSrc: text(row,"image"), beltLogoSrc: text(row,"belt_image"), mainPartner: row.main_partner === true, href: text(row,"url") }));
 }
 export async function getGallery(): Promise<GalleryImage[]> {
   "use cache";

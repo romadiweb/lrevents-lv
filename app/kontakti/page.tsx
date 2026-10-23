@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getContactContent } from "@/lib/contact-content";
@@ -12,9 +11,7 @@ export const metadata: Metadata = {
     "Sazinies ar LR Events komandu. Biedrības kontakti, rekvizīti un informācija sadarbībai.",
 };
 
-export default function ContactsPage() {
-  return <Suspense fallback={<main id="main-content" className="contact-page container" aria-busy="true"><h1>Kontakti</h1><p role="status">Ielādē kontaktinformāciju…</p></main>}><ContactContentPage /></Suspense>;
-}
+export default async function ContactsPage() { return <ContactContentPage />; }
 
 async function ContactContentPage() {
   const { associationName, associationDetails, introduction, email, team } = await getContactContent();

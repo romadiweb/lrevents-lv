@@ -22,6 +22,7 @@ insert into auth.users values('11111111-1111-4111-8111-111111111111','roberts.dz
 await db.exec(await readFile(new URL('../supabase/migrations/20261022105653_content_cms.sql',import.meta.url),'utf8'));
 await db.exec(await readFile(new URL('../supabase/migrations/20261022120523_gallery_content.sql',import.meta.url),'utf8'));
 await db.exec(await readFile(new URL('../supabase/migrations/20261022123550_partner_belt_logo_field.sql',import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261023092435_results_and_cms_settings.sql',import.meta.url),'utf8'));
 const owner='11111111-1111-4111-8111-111111111111';
 async function role(name,id='') { await db.exec(`reset role; set role ${name}; select set_config('request.jwt.claim.sub','${id}',false);`); }
 async function count(table) { return Number((await db.query(`select count(*) n from public.${table}`)).rows[0].n); }
@@ -71,6 +72,21 @@ assert.equal((await db.query('select title from public.cms_events where id=$1',[
 assert.equal(await count('cms_event_documents'),1);
 await db.query("insert into storage.objects(bucket_id,name) values('cms-media',$1)",[`${owner}/logo.webp`]);
 await assert.rejects(()=>db.query("insert into storage.objects(bucket_id,name) values('cms-media','other/logo.webp')"));
+const seasonId=(await db.query("insert into public.cms_seasons(name,year,published) values('Draft season',2026,false) returning id")).rows[0].id;
+const classId=(await db.query("insert into public.cms_classes(season_id,name,published) values($1,'RWD',true) returning id",[seasonId])).rows[0].id;
+await role('anon');assert.equal(await count('cms_seasons'),0);assert.equal(await count('cms_classes'),0);
+await assert.rejects(()=>db.query("insert into public.cms_seasons(name,year) values('Unauthorized',2026)"));
+await role('authenticated',owner);await db.query('update public.cms_seasons set published=true where id=$1',[seasonId]);
+await role('anon');assert.equal(await count('cms_classes'),1);
+await role('authenticated',owner);
+const teamId=(await db.query("insert into public.cms_racing_teams(name,published) values('Test team',true) returning id")).rows[0].id;
+const personId=(await db.query("insert into public.cms_participants(first_name,last_name,published) values('Test','Driver',true) returning id")).rows[0].id;
+await db.query('insert into public.cms_entries(season_id,class_id,participant_id,team_id) values($1,$2,$3,$4)',[seasonId,classId,personId,teamId]);
+const secondSeason=(await db.query("insert into public.cms_seasons(name,year) values('Other',2027) returning id")).rows[0].id;
+await assert.rejects(()=>db.query('insert into public.cms_entries(season_id,class_id,participant_id) values($1,$2,$3)',[secondSeason,classId,personId]));
+await assert.rejects(()=>db.query('delete from public.cms_participants where id=$1',[personId]));
+await db.query("insert into public.cms_partners(name,url,image,main_partner) values('Main','https://example.test','/images/test.png',true)");
+await assert.rejects(()=>db.query("insert into public.cms_partners(name,url,image,main_partner) values('Duplicate','https://example.test','/images/test.png',true)"));
 await role('postgres');
 await db.query('update public.cms_users set active=false where id=$1',[owner]);
 await role('authenticated',owner);

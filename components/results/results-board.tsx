@@ -12,6 +12,7 @@ import {
   type ResultsSeason,
 } from "@/lib/results";
 
+import { resolveRound } from "@/lib/results-selection";
 import { RoundResultsTable } from "./round-results-table";
 
 type Mode = "standings" | "rounds";
@@ -202,41 +203,46 @@ export function ResultsBoard({
   mode = "standings",
   initialRoundId,
   initialClassId,
+  live=false,
 }: {
   seasons: ResultsSeason[];
   mode?: Mode;
   initialRoundId?: string;
   initialClassId?: string;
+  live?: boolean;
 }) {
-  const [seasonId, setSeasonId] = useState(seasons[0]?.id ?? "");
-  const [classId, setClassId] = useState(
-    seasons[0]?.classes.some((c) => c.id === initialClassId)
+  const [seasonId, setSeasonId] = useState(seasons.find(season=>season.rounds.some(round=>round.id===initialRoundId))?.id ?? seasons[0]?.id ?? "");
+  const [selectedClassId, setClassId] = useState(
+    seasons.some(season=>season.classes.some((c) => c.id === initialClassId))
       ? initialClassId!
       : "all",
   );
-  const [roundId, setRoundId] = useState(
-    seasons[0]?.rounds.some((r) => r.id === initialRoundId)
+  const [selectedRoundId, setRoundId] = useState(
+    seasons.some(season=>season.rounds.some((r) => r.id === initialRoundId))
       ? initialRoundId!
-      : (seasons[0]?.rounds[0]?.id ?? ""),
+      : (live ? "" : seasons[0]?.rounds[0]?.id ?? ""),
   );
+  const [teamId,setTeamId]=useState("all");
   const [search, setSearch] = useState("");
   const season = seasons.find((s) => s.id === seasonId) ?? seasons[0];
+  const classId=selectedClassId==="all"||season?.classes.some(c=>c.id===selectedClassId)?selectedClassId:"all";
+  const roundId=resolveRound(season,selectedRoundId,live);
   const filtered = useMemo(
     () =>
-      season?.entries.filter((e) =>
-        `${e.driver} ${e.car ?? ""}`
+      season?.entries.filter((e) => (teamId==="all"||e.teamId===teamId)&&
+        `${e.driver} ${e.car ?? ""} ${e.teamName??""} ${e.startNumber??""}`
           .toLocaleLowerCase("lv")
           .includes(search.trim().toLocaleLowerCase("lv")),
       ) ?? [],
-    [season, search],
+    [season, search,teamId],
   );
   function changeSeason(id: string) {
     setSeasonId(id);
-    setClassId("all");
-    setRoundId(seasons.find((s) => s.id === id)?.rounds[0]?.id ?? "");
+    setClassId("all");setTeamId("all");
+    setRoundId(live ? "" : seasons.find((s) => s.id === id)?.rounds[0]?.id ?? "");
     setSearch("");
   }
-  const title = mode === "standings" ? "Kopvērtējums" : "Posmu rezultāti";
+  const title = live ? "Tiešsaistes rezultāti" : mode === "standings" ? "Kopvērtējums" : "Posmu rezultāti";
   return (
     <main id="main-content" className="results-page site-content-page">
       <div className="results-page-heading container">
@@ -251,11 +257,12 @@ export function ResultsBoard({
           <h1>{title}</h1>
           <p>
             {mode === "standings"
-              ? "Sezonas kopvērtējums un punktu sadalījums pa sacensību posmiem."
+              ? "Sezonas kopvērtējums un punktu sadalījums pa sacensību posmiem. Vienādu punktu gadījumā: vairāk 1. vietu, tad 2., 3. un tālāk. Ja arī tās sakrīt — dalīta vieta."
               : "Atsevišķu sacensību posmu rezultāti pa klasēm."}
           </p>
         </div>
       </div>
+      {live&&<p className="container">Publicētie rezultāti tiek atjaunināti ik pēc 30 sekundēm. Tie nav automātiska laika mērīšanas sistēmas pārraide.</p>}
       <section className="results-surface" aria-label={title}>
         <div className="results-container container">
           <nav className="results-navigation" aria-label="Rezultātu skats">
@@ -319,13 +326,14 @@ export function ResultsBoard({
                     className="standings-control--round"
                   />
                 )}
+                <Select id="results-team" label="Komanda" value={teamId} options={[{value:"all",label:"Visas komandas"},...Array.from(new Map(season.entries.filter(entry=>entry.teamId&&entry.teamName).map(entry=>[entry.teamId!,entry.teamName!])).entries()).map(([value,label])=>({value,label}))]} onChange={setTeamId}/>
                 <label className="standings-search">
                   <span>Meklēt</span>
                   <span className="standings-search-field">
                     <Search size={17} aria-hidden="true" />
                     <input
                       type="search"
-                      placeholder="Braucējs vai auto"
+                      placeholder="Braucējs, auto vai komanda"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                     />
