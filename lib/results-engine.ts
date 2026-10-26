@@ -28,7 +28,7 @@ export function buildResults(tables:ResultsTables){
   const rounds=rows("cms_rounds").filter(row=>row.season_id===seasonId).sort((a,b)=>Number(a.sort_order)-Number(b.sort_order)||text(a,"event_date").localeCompare(text(b,"event_date"))).map((row,index)=>({id:text(row,"id"),label:text(row,"name"),shortLabel:`P${index+1}`,runCount:0}));
   const classes=rows("cms_classes").filter(row=>row.season_id===seasonId).sort((a,b)=>Number(a.sort_order)-Number(b.sort_order)).map(row=>({id:text(row,"id"),name:text(row,"name")}));
   const scale=text(config,"points_scale").split(",").map(Number);
-  const entries:ResultsEntry[]=[];const entryTeams=new Map<string,string>();
+  const entries:ResultsEntry[]=[];const entryTeams=new Map<string,string>();const entryParticipants=new Map<string,string>();
   for(const entry of rows("cms_entries").filter(row=>row.season_id===seasonId&&classes.some(c=>c.id===row.class_id))){
    const person=people.find(row=>row.id===entry.participant_id);if(!person)continue;
    const e:ResultsEntry={id:text(entry,"id"),classId:text(entry,"class_id"),driver:`${text(person,"first_name")} ${text(person,"last_name")}`,car:text(entry,"car")||text(person,"car"),startNumber:text(entry,"start_number"),scores:{},roundPositions:{},roundRuns:{},roundStatuses:{},teamId:text(entry,"team_id"),teamName:text(teams.find(t=>t.id===entry.team_id)||{},"name")};
@@ -42,14 +42,19 @@ export function buildResults(tables:ResultsTables){
    }
    e.officialTotal=countedTotal(Object.values(e.scores),Number(config.best_rounds));
    // No phantom 0-point entries in standings before a result exists.
-   if(Object.values(e.scores).some(score=>score!==null)||Object.keys(e.roundStatuses!).length){entries.push(e);entryTeams.set(e.id,text(entry,"team_id"));}
+   if(Object.values(e.scores).some(score=>score!==null)||Object.keys(e.roundStatuses!).length){entries.push(e);entryTeams.set(e.id,text(entry,"team_id"));entryParticipants.set(e.id,text(entry,"participant_id"));}
   }
   for(const c of classes)rankClass(entries.filter(entry=>entry.classId===c.id));
   const season:ResultsSeason={id:seasonId,competition:text(config,"name"),year:Number(config.year),status:"published",standingStatus:"provisional",rounds,classes,entries};
   (config.archived===true?archive:seasons).push(season);
   const scoredTeams=teams.map(team=>{
    const members=entries.filter(entry=>entryTeams.get(entry.id)===team.id);
-   const scores=rounds.map(round=>{const points=members.map(entry=>entry.scores[round.id]??null);return points.some(point=>point!==null)?countedTotal(points,Number(config.team_best)):null;});
+   const scores=rounds.map(round=>{
+    // A driver's best class result counts once per round, before the team limit.
+    const participantPoints=new Map<string,number>();
+    for(const entry of members){const points=entry.scores[round.id];if(points==null)continue;const participantId=entryParticipants.get(entry.id)!;participantPoints.set(participantId,Math.max(participantPoints.get(participantId)??-Infinity,points));}
+    return participantPoints.size?countedTotal([...participantPoints.values()],Number(config.team_best)):null;
+   });
    const teamEntry:ResultsEntry={id:text(team,"id"),classId:"teams",driver:text(team,"name"),teamId:text(team,"id"),teamName:text(team,"name"),scores:Object.fromEntries(rounds.map((round,index)=>[round.id,scores[index]])),officialTotal:countedTotal(scores,Number(config.best_rounds)),roundPositions:{}};
    return {team,members,scores,teamEntry};
   }).filter(item=>item.members.length);

@@ -21,6 +21,26 @@ assert.equal(out.teams.s[0].points,32);
 assert.equal(out.teams.s[0].carBrand,"bmw");
 assert.equal(season.entries.find(e=>e.id==="t").teamId,"t");
 assert.equal(season.entries.find(e=>e.id==="t").scores.r3,null,"future rounds have no team result");
+const multiClass=structuredClone(tables);
+multiClass.cms_classes.push({...published,id:"c2",season_id:"s",name:"Open",sort_order:1});
+multiClass.cms_entries.push({...multiClass.cms_entries[0],id:"eA2",class_id:"c2"});
+multiClass.cms_results.push(
+ {...published,id:"a2r1",entry_id:"eA2",round_id:"r1",position:2,status:"OK",points:null},
+ {...published,id:"a2r2",entry_id:"eA2",round_id:"r2",position:1,status:"OK",points:null},
+);
+let multiOut=buildResults(multiClass);
+assert.deepEqual(multiOut.teams.s[0].rounds,[18,18,null],"each participant contributes their best class score in each round");
+assert.equal(multiOut.teams.s[0].points,36);
+assert.equal(multiOut.current[0].entries.filter(e=>e.id==="eA"||e.id==="eA2").length,2,"individual class standings remain separate");
+multiClass.cms_seasons[0].team_best=1;
+assert.deepEqual(buildResults(multiClass).teams.s[0].rounds,[10,10,null],"team limit is applied after selecting each participant's best class");
+multiClass.cms_seasons[0].team_best=0;
+multiClass.cms_participants[1].first_name="A";
+assert.equal(buildResults(multiClass).teams.s[0].points,36,"different participant IDs count separately even with matching names");
+multiClass.cms_results.find(r=>r.id==="a2r2").published=false;
+assert.deepEqual(buildResults(multiClass).teams.s[0].rounds,[18,14,null],"draft class results do not affect team scores");
+multiClass.cms_results.forEach(r=>{r.points=0;});
+assert.deepEqual(buildResults(multiClass).teams.s[0].rounds,[0,0,null],"recorded zero team scores stay distinct from future rounds");
 assert.equal(countedTotal([0,null,5,10],2),15);
 const a={id:"a",driver:"A",officialTotal:10,roundPositions:{r1:2,r2:3}};
 const b={id:"b",driver:"B",officialTotal:10,roundPositions:{r1:2,r2:4}};

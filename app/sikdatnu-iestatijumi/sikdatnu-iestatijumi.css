@@ -1,0 +1,28 @@
+.cookie-page { padding-block: 32px 100px; max-width: 1000px; }
+.cookie-breadcrumb { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); margin-bottom: 48px; }
+.cookie-breadcrumb a:hover { color: var(--cherry); }
+.cookie-page h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.1; font-weight: 650; margin: 0 0 24px; }
+.cookie-page p { max-width: 72ch; font-size: 15px; line-height: 1.75; color: var(--muted); margin: 12px 0; }
+.cookie-page .cookie-page-intro { font-size: 18px; margin-bottom: 40px; }
+.cookie-page section { padding-block: 32px; border-top: 1px solid var(--border); }
+.cookie-page h2 { font-size: 24px; font-weight: 600; line-height: 1.25; margin: 0; }
+.cookie-section-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.cookie-section-title > span { font-size: 12px; color: var(--muted); }
+.cookie-preferences-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.cookie-reset { min-height: 44px; padding: 0; margin-top: 12px; border: 0; background: none; color: var(--muted); font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+.cookie-reset:hover { color: var(--cherry); }
+.cookie-page .cookie-save-message { min-height: 26px; color: var(--cherry); margin-bottom: 0; }
+.cookie-page .cookie-error { color: var(--cherry); }
+.cookie-inventory { margin: 24px 0 0; }
+.cookie-inventory > div { display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; border-top: 1px solid var(--border); padding-block: 20px; }
+.cookie-inventory dt { font-size: 14px; font-weight: 600; }
+.cookie-inventory code { display: block; font-size: 12px; font-weight: 400; margin-top: 6px; overflow-wrap: anywhere; }
+.cookie-inventory dd { margin: 0; font-size: 14px; line-height: 1.7; color: var(--muted); }
+@media (max-width: 767px) {
+  .cookie-page { padding-block: 24px 64px; }
+  .cookie-breadcrumb { margin-bottom: 32px; }
+  .cookie-page .cookie-page-intro { font-size: 16px; }
+  .cookie-page h2 { font-size: 22px; }
+  .cookie-inventory > div { grid-template-columns: 1fr; gap: 12px; }
+  .cookie-preferences-actions { flex-direction: column; }
+}

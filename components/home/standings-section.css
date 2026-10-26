@@ -7,6 +7,12 @@
   background: var(--off-white, #fafaf8);
 }
 
+.standings-section + .gallery-section { margin-top: 48px; }
+.standings-section--empty .standings-intro { color: var(--noir); }
+.standings-section--empty .standings-link { color: var(--cherry); border-color: var(--cherry); }
+.standings-section--empty .standings-link:focus-visible { outline-color: var(--cherry); }
+.standings-empty { grid-column: 1 / -1; margin: 0; padding-block: 28px; border-block: 1px solid var(--border); color: var(--muted); font-size: 16px; line-height: 1.6; }
+
 .standings-backdrop,
 .standings-shade {
   position: absolute;
@@ -370,6 +376,7 @@
 }
 
 @media (max-width: 767px) {
+  .standings-section + .gallery-section { margin-top: 24px; }
   .standings-section {
     padding-block: 64px 72px;
   }

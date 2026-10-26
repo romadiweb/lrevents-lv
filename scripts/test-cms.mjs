@@ -23,6 +23,7 @@ await db.exec(await readFile(new URL('../supabase/migrations/20261022105653_cont
 await db.exec(await readFile(new URL('../supabase/migrations/20261022120523_gallery_content.sql',import.meta.url),'utf8'));
 await db.exec(await readFile(new URL('../supabase/migrations/20261022123550_partner_belt_logo_field.sql',import.meta.url),'utf8'));
 await db.exec(await readFile(new URL('../supabase/migrations/20261023092435_results_and_cms_settings.sql',import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261026102413_optional_historical_round_dates.sql',import.meta.url),'utf8'));
 const owner='11111111-1111-4111-8111-111111111111';
 async function role(name,id='') { await db.exec(`reset role; set role ${name}; select set_config('request.jwt.claim.sub','${id}',false);`); }
 async function count(table) { return Number((await db.query(`select count(*) n from public.${table}`)).rows[0].n); }
@@ -73,6 +74,8 @@ assert.equal(await count('cms_event_documents'),1);
 await db.query("insert into storage.objects(bucket_id,name) values('cms-media',$1)",[`${owner}/logo.webp`]);
 await assert.rejects(()=>db.query("insert into storage.objects(bucket_id,name) values('cms-media','other/logo.webp')"));
 const seasonId=(await db.query("insert into public.cms_seasons(name,year,published) values('Draft season',2026,false) returning id")).rows[0].id;
+const historicalRound=(await db.query("insert into public.cms_rounds(season_id,name,event_date) values($1,'Historical round',null) returning event_date",[seasonId])).rows[0];
+assert.equal(historicalRound.event_date,null,'historical results can keep unknown dates without inventing one');
 const classId=(await db.query("insert into public.cms_classes(season_id,name,published) values($1,'RWD',true) returning id",[seasonId])).rows[0].id;
 await role('anon');assert.equal(await count('cms_seasons'),0);assert.equal(await count('cms_classes'),0);
 await assert.rejects(()=>db.query("insert into public.cms_seasons(name,year) values('Unauthorized',2026)"));

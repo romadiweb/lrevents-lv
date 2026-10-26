@@ -38,7 +38,7 @@ export function validateRecord(section: CmsSection, input: Record<string, unknow
     if (value && field.type === "select" && !field.options?.includes(value)) throw Error("Izvēlies faila veidu.");
     if (value && field.type === "date" && (!/^\d{4}-\d{2}-\d{2}$/.test(value) || new Date(`${value}T12:00Z`).toISOString().slice(0, 10) !== value)) throw Error("Ievadi derīgu datumu.");
     if (value && field.type === "time" && !/^([01]\d|2[0-3]):[0-5]\d(?::00)?$/.test(value)) throw Error("Ievadi laiku formātā HH:MM.");
-    result[field.key] = (field.type === "category" || field.type === "lookup") && !value ? null : field.type === "email" ? value.toLowerCase() : value;
+    result[field.key] = (field.type === "category" || field.type === "lookup" || field.type === "date") && !value ? null : field.type === "email" ? value.toLowerCase() : value;
   }
   if ("slug" in result) {
     result.slug = slugify(String(result.slug || result.title || result.name));

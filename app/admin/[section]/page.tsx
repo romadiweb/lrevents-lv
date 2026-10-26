@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 import { isCmsSection, sections, type CmsRecord } from "@/lib/cms/config";
 import { getCmsIdentity } from "@/lib/supabase/auth-server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { CmsLoader } from "@/components/admin/cms-loader";
 import { ContentEditor } from "@/components/admin/content-editor";
 async function Editor({ params }: { params: Promise<{ section: string }> }) {
   const { section } = await params;
@@ -26,4 +25,4 @@ async function Editor({ params }: { params: Promise<{ section: string }> }) {
   const rows = (records.data ?? []).map(row => section === "pasakumi" ? { ...row, document_ids: (links.data ?? []).filter(link => link.event_id === row.id).map(link => link.document_id) } : row) as CmsRecord[];
   return <ContentEditor key={section} section={section} records={rows} categories={categories.data ?? []} documents={documents.data ?? []} currentUserId={identity.user.id} lookups={lookups} />;
 }
-export default function EditorPage(props: { params: Promise<{ section: string }> }) { return <Suspense fallback={<CmsLoader label="Ielādē ierakstus…"/>}><Editor {...props} /></Suspense>; }
+export default function EditorPage(props: { params: Promise<{ section: string }> }) { return <Suspense fallback={<p className="cms-guide" role="status">Ielādē ierakstus…</p>}><Editor {...props} /></Suspense>; }

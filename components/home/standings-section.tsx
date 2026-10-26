@@ -11,11 +11,11 @@ export async function StandingsSection() {
   const podiumOrder = [teamStandings[1], teamStandings[0], teamStandings[2]].filter(team=>!!team);
 
   return (
-    <section className="standings-section" id="standings" aria-labelledby="standings-title">
-      <div className="standings-backdrop" aria-hidden="true">
+    <section className={`standings-section${podiumOrder.length ? "" : " standings-section--empty"}`} id="standings" aria-labelledby="standings-title">
+      {podiumOrder.length > 0 && <><div className="standings-backdrop" aria-hidden="true">
         <Image src="/images/event-track.jpg" alt="" fill sizes="100vw" />
       </div>
-      <div className="standings-shade" aria-hidden="true" />
+      <div className="standings-shade" aria-hidden="true" /></>}
 
       <div className="container standings-intro">
         <div>
@@ -32,7 +32,7 @@ export async function StandingsSection() {
       </div>
 
       <div className="container standings-podium" id="standings-podium">
-        {!podiumOrder.length&&<p>Komandu rezultāti vēl nav publicēti.</p>}
+        {!podiumOrder.length&&<p className="standings-empty">Komandu rezultāti vēl nav publicēti.</p>}
         {podiumOrder.map((team) => {
           const carBrand = getCarBrand(team.carBrand);
           return (

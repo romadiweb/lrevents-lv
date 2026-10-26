@@ -27,9 +27,7 @@
 }
 .site-footer .brand-image img {
   width: 156px;
-  height: 156px;
-  top: -34px;
-  filter: invert(1);
+  height: 88px;
 }
 .site-footer .brand-caption {
   display: none;
@@ -98,8 +96,7 @@
   }
   .site-footer .brand-image img {
     width: 120px;
-    height: 120px;
-    top: -26px;
+    height: 68px;
   }
   .footer-partner-placeholder {
     padding-left: 24px;
@@ -129,6 +126,7 @@
   align-items: center;
   gap: 24px;
 }
+.romadi-credit { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; }
 .romadi-signature {
   width: 164px;
   height: auto;

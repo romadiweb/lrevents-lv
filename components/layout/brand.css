@@ -14,15 +14,16 @@
 .brand-image img {
   position: absolute;
   width: 112px;
-  height: 112px;
+  height: 62px;
   max-width: none;
-  top: -25px;
-  filter: invert(1);
-  transition: filter var(--motion);
+  inset: 0;
+  object-fit: contain;
+  transform: scale(0.85);
 }
-.is-compact .brand-image img {
-  filter: none;
-}
+.brand-image .brand-logo-black { display: none; }
+.brand-image .brand-logo-white { display: block; }
+.is-compact .brand--adaptive .brand-logo-black { display: block; }
+.is-compact .brand--adaptive .brand-logo-white { display: none; }
 .brand-caption {
   font-size: 9px;
   line-height: 1.6;
@@ -50,8 +51,7 @@
   }
   .brand-image img {
     width: 96px;
-    height: 96px;
-    top: -20px;
+    height: 56px;
   }
 }
 

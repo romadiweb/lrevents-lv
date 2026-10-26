@@ -27,7 +27,7 @@ export function MobileNavigation() {
         <Dialog.Overlay className="menu-overlay mobile-menu-overlay" />
         <Dialog.Content className="mobile-menu" aria-describedby={undefined}>
           <div className="mobile-menu-heading">
-            <div onClick={() => changeOpen(false)}><Brand /></div>
+            <div onClick={() => changeOpen(false)}><Brand tone="white" /></div>
             <Dialog.Title className="sr-only">Galvenā izvēlne</Dialog.Title>
             <Dialog.Close className="mobile-menu-close" aria-label="Aizvērt izvēlni"><X size={22} strokeWidth={1.6} /></Dialog.Close>
           </div>
@@ -56,7 +56,7 @@ export function MobileNavigation() {
               </MembershipLink>
               <SocialLinks />
               <p className="mobile-menu-copyright">© 2026 LR Events</p>
-              <CookieSettings />
+              <CookieSettings onClick={() => changeOpen(false)} />
             </div>
           </div>
         </Dialog.Content>

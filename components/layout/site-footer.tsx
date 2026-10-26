@@ -12,7 +12,7 @@ export function SiteFooter() {
         <SponsorGrid />
         <div className="footer-identity">
           <div className="footer-brand-row">
-            <Brand />
+            <Brand tone="white" />
             <div
               className="footer-partner-placeholder"
               aria-label="Galvenā partnera logotipa vieta"
@@ -40,7 +40,7 @@ export function SiteFooter() {
         </div>
         <div className="footer-bottom">
           <CookieSettings />
-          <Image className="romadi-signature" src="/brand/romadi-signature.svg" alt="Romadi" width={164} height={26} />
+          <a className="romadi-credit" href="https://romadi.lv" aria-label="Designed by Romadi — romadi.lv"><Image className="romadi-signature" src="/brand/romadi-signature.svg" alt="Designed by Romadi" width={164} height={26} /></a>
         </div>
       </div>
     </footer>
