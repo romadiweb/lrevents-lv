@@ -20,13 +20,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LR Events — autosporta pasākumi Latvijā",
-  manifest: "/site.webmanifest",
+  manifest: "/site.webmanifest?v=20261027-2",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
-      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
+      { url: "/favicon.svg?v=20261027-2", type: "image/svg+xml", sizes: "any" },
+      { url: "/favicon-96x96.png?v=20261027-2", type: "image/png", sizes: "96x96" },
     ],
-    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    apple: { url: "/apple-touch-icon.png?v=20261027-2", sizes: "180x180", type: "image/png" },
   },
   description:
     "Auto, moto un sporta pasākumi Latvijā. Reģistrācija, nolikumi un rezultāti.",
