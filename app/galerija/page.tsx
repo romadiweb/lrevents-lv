@@ -16,6 +16,19 @@ async function GalleryContent({ searchParams }: Props) {
   const category = categories.some(item => item.id === requested) ? requested : "";
   const visible = category ? images.filter(image => image.category === category) : images;
   const usedCategories = categories.filter(item => item.id === category || images.some(image => image.category === item.id));
+  return <div className="container photo-library">
+      <form action="/galerija" className="photo-toolbar">
+        <label htmlFor="gallery-category">Kategorija</label>
+        <div className="photo-select"><select id="gallery-category" name="kategorija" key={category} defaultValue={category}><option value="">Visas kategorijas</option>{usedCategories.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></div>
+        <button type="submit">Atlasīt<ArrowRight size={16} aria-hidden="true" /></button>
+        {category && <Link href="/galerija" className="photo-reset">Notīrīt filtru</Link>}
+        <p>{visible.length} {visible.length === 1 ? "attēls" : "attēli"}</p>
+      </form>
+      {visible.length ? <GalleryGrid key={category} images={visible} /> : <section className="photo-empty"><h2>{category ? "Šajā kategorijā vēl nav attēlu" : "Galerija vēl top"}</h2><p>Fotogrāfijas šeit parādīsies pēc publicēšanas.</p>{category && <Link href="/galerija">Skatīt visus attēlus<ArrowRight size={17} aria-hidden="true" /></Link>}</section>}
+    </div>;
+}
+
+export default function GalleryPage(props: Props) {
   return <main id="main-content" className="photo-page site-content-page">
     <header className="photo-hero">
       <Image src="/images/event-track.jpg" alt="" fill sizes="100vw" preload />
@@ -25,17 +38,6 @@ async function GalleryContent({ searchParams }: Props) {
         <h1>Galerija</h1><p>Notikumi, cilvēki un mirkļi no trases.</p>
       </div>
     </header>
-    <div className="container photo-library">
-      <form action="/galerija" className="photo-toolbar">
-        <label htmlFor="gallery-category">Kategorija</label>
-        <div className="photo-select"><select id="gallery-category" name="kategorija" key={category} defaultValue={category}><option value="">Visas kategorijas</option>{usedCategories.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></div>
-        <button type="submit">Atlasīt<ArrowRight size={16} aria-hidden="true" /></button>
-        {category && <Link href="/galerija" className="photo-reset">Notīrīt filtru</Link>}
-        <p>{visible.length} {visible.length === 1 ? "attēls" : "attēli"}</p>
-      </form>
-      {visible.length ? <GalleryGrid key={category} images={visible} /> : <section className="photo-empty"><h2>{category ? "Šajā kategorijā vēl nav attēlu" : "Galerija vēl top"}</h2><p>Fotogrāfijas šeit parādīsies pēc publicēšanas.</p>{category && <Link href="/galerija">Skatīt visus attēlus<ArrowRight size={17} aria-hidden="true" /></Link>}</section>}
-    </div>
+    <Suspense fallback={<p className="photo-loading container" role="status">Ielādē attēlus…</p>}><GalleryContent {...props} /></Suspense>
   </main>;
 }
-
-export default function GalleryPage(props: Props) { return <Suspense fallback={<main id="main-content" className="photo-loading container"><p role="status">Ielādē galeriju…</p></main>}><GalleryContent {...props} /></Suspense>; }

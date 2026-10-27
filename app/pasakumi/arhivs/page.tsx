@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { connection } from "next/server";
-import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
 import { EventCard } from "@/components/events/event-card";
-import { getPastEvents, rigaDate } from "@/lib/events";
-import { getEvents } from "@/lib/cms/content";
+import { getPastEvents } from "@/lib/events";
+import { getEvents, getTodayInRiga } from "@/lib/cms/content";
 import "../pasakumi.css";
 
 export const metadata: Metadata = {
@@ -14,9 +12,8 @@ export const metadata: Metadata = {
 };
 
 async function PastEventsList() {
-  await connection();
-  const events = await getEvents();
-  const pastEvents = getPastEvents(events, rigaDate(new Date()));
+  const [events, today] = await Promise.all([getEvents(), getTodayInRiga()]);
+  const pastEvents = getPastEvents(events, today);
 
   return <section className="events-archive-list" aria-labelledby="past-events-title">
     {events.some(event => event.isDemo) && <p className="events-demo-note">Paraugpasākumi — nosaukumi, datumi un norises informācija ir ilustratīva.</p>}
@@ -32,6 +29,6 @@ export default function EventArchivePage() {
     <nav className="events-breadcrumb" aria-label="Atrašanās vieta"><Link href="/">Sākums</Link><span aria-hidden="true">/</span><Link href="/pasakumi">Pasākumi</Link><span aria-hidden="true">/</span><span aria-current="page">Iepriekšējie pasākumi</span></nav>
     <header className="events-page-heading"><h1>Iepriekšējie pasākumi</h1><p>Noslēgušās sacensības un<br />to norises informācija vienuviet.</p></header>
     <nav className="events-view-nav" aria-label="Pasākumu saraksta skats"><Link href="/pasakumi">Tuvākie pasākumi</Link><Link href="/pasakumi/arhivs" aria-current="page">Iepriekšējie pasākumi</Link></nav>
-    <Suspense fallback={<p className="events-loading" role="status">Ielādē iepriekšējos pasākumus…</p>}><PastEventsList /></Suspense>
+    <PastEventsList />
   </div></main>;
 }

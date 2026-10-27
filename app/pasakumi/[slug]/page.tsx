@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { connection } from "next/server";
 import { Suspense } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock3, FileText, MapPin } from "lucide-react";
-import { events as demoEvents, formatEventDate, rigaDate } from "@/lib/events";
-import { getEvents } from "@/lib/cms/content";
+import { events as demoEvents, formatEventDate } from "@/lib/events";
+import { getEvents, getTodayInRiga } from "@/lib/cms/content";
 import { StandingsSection } from "@/components/home/standings-section";
 import "../pasakumi.css";
 
@@ -21,11 +20,10 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
 
 async function EventContent({ params }: EventPageProps) {
   const { slug } = await params;
-  const events = await getEvents();
+  const [events, today] = await Promise.all([getEvents(), getTodayInRiga()]);
   const event = events.find((item) => item.id === slug);
   if (!event) notFound();
-  await connection();
-  const hasEnded = (event.endDate ?? event.date) < rigaDate(new Date());
+  const hasEnded = (event.endDate ?? event.date) < today;
   return <main id="main-content" className="event-detail-page site-content-page">
     <header className="event-detail-hero">
       <Image src={event.image} alt="" fill sizes="100vw" loading="eager" className="event-detail-hero-image" />

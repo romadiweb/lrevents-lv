@@ -6,11 +6,12 @@ import { GallerySection } from "@/components/home/gallery-section";
 import { StandingsSection } from "@/components/home/standings-section";
 import { getArticles, getEvents, getGallery } from "@/lib/cms/content";
 import { rigaDate } from "@/lib/events";
-import { Suspense } from "react";
-import { connection } from "next/server";
+import { cacheLife, cacheTag } from "next/cache";
 
 async function HomeContent() {
-  await connection();
+  "use cache";
+  cacheTag("cms-content");
+  cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const [articles, events, gallery] = await Promise.all([getArticles(), getEvents(), getGallery()]);
   const upcomingEvents = events.filter(event => (event.endDate ?? event.date) >= rigaDate(new Date()));
   return (
@@ -24,4 +25,4 @@ async function HomeContent() {
     </main>
   );
 }
-export default function Home() { return <Suspense fallback={<main id="main-content"><p className="container">Ielādē…</p></main>}><HomeContent /></Suspense>; }
+export default function Home() { return <HomeContent />; }

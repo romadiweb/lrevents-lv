@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, FileText } from "lucide-react";
 import { getDocuments } from "@/lib/cms/content";
-import { Suspense } from "react";
 import "./dokumenti.css";
 
 export const metadata: Metadata = {
@@ -98,4 +97,4 @@ async function DocumentsContent() {
     </main>
   );
 }
-export default function DocumentsPage() { return <Suspense fallback={<main className="documents-page container"><p role="status">Ielādē dokumentus…</p></main>}><DocumentsContent /></Suspense>; }
+export default function DocumentsPage() { return <DocumentsContent />; }

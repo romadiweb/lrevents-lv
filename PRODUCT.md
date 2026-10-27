@@ -12,6 +12,9 @@ Latvian-language LR Events website presenting motorsport events, participant inf
 
 ## Capabilities and Constraints
 
+- Public CMS content and the homepage support prerendering and prefetching. Server data revalidates after 60 seconds; CMS edits invalidate the existing content tags. The homepage does not wait on request-time CMS reads or show a loader in place of its content. Date-based event lists refresh using Europe/Riga time.
+- Public headings omit trailing periods. The homepage hero reads “Sacensību gars. Latvijas ceļi!”.
+
 - A protected Supabase CMS manages team members, articles, categories, partners, documents, events, gallery, users and competition results. Public pages read published CMS records. Editorial content has local availability fallbacks; result tables remain empty until real results are entered and published.
 - Authenticated CMS editors can change their own password at `/admin/parole` without email confirmation. The browser renews its session with the new password afterward.
 - The article archive uses category filtering only, without a race or year selector.

@@ -54,7 +54,7 @@ export default function PartnersPage() {
           <div className="partners-hero-copy">
             <h1 id="partners-title">
               Autosports aug,
-              <span> kad tam ir <em>atbalsts.</em></span>
+              <span> kad tam ir <em>atbalsts</em></span>
             </h1>
             <p>
               LR Events sadarbojas ar uzņēmumiem un cilvēkiem, kuri vēlas
@@ -83,7 +83,7 @@ export default function PartnersPage() {
         <div className="partners-container">
           <div className="partners-supporters-heading">
             <h2 id="partners-supporters-title">
-              Tie, kas bijuši <em>līdzās.</em>
+              Tie, kas bijuši <em>līdzās</em>
             </h2>
             <p>
               Paldies atbalstītājiem, kuri palīdzējuši LR Events un autosporta
@@ -105,7 +105,7 @@ export default function PartnersPage() {
         <div className="partners-container partners-collaboration-layout">
           <div className="partners-collaboration-copy">
             <h2 id="partners-collaboration-title">
-              Nav vienas pareizās <em>sadarbības formas.</em>
+              Nav vienas pareizās <em>sadarbības formas</em>
             </h2>
             <p>
               Vienam uzņēmumam tuvāks ir atbalsts sacensību posmam, citam —
@@ -129,7 +129,7 @@ export default function PartnersPage() {
         <div className="partners-container partners-contact-layout">
           <div className="partners-contact-copy">
             <h2 id="partners-contact-title">
-              Ir ideja? <em>Sazināsimies.</em>
+              Ir ideja? <em>Sazināsimies</em>
             </h2>
             <p>
               Nav nepieciešams sagatavot sponsoru prezentāciju vai gatavu

@@ -27,7 +27,7 @@ export function isContactContent(value: unknown): value is ContactContent {
 
 export async function getContactContent(): Promise<ContactContent> {
   "use cache";
-  cacheLife({ stale: 60, revalidate: 60, expire: 300 });
+  cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   cacheTag("contact-content");
   const currentTeam = await getTeam();
   return { ...defaultContactContent, team: currentTeam };

@@ -2,7 +2,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { createContentClient } from "@/lib/supabase/server";
 import { articles as demoArticles, articleCategories, type Article } from "@/lib/articles";
-import { events as demoEvents, type MotorsportEvent } from "@/lib/events";
+import { events as demoEvents, rigaDate, type MotorsportEvent } from "@/lib/events";
 import { sponsors as demoSponsors, type Sponsor } from "@/lib/sponsors";
 import { eventDocuments } from "@/lib/documents";
 import { team as defaultTeam } from "@/lib/contacts";
@@ -20,15 +20,22 @@ export async function read(table: string): Promise<Row[] | null> {
   } catch { return null; }
 }
 const text = (row: Row, key: string) => typeof row[key] === "string" ? row[key] as string : "";
+// Date-sensitive public pages can prerender without opting out of caching.
+// Revalidation keeps event lists current across midnight in Europe/Riga.
+export async function getTodayInRiga() {
+  "use cache";
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
+  return rigaDate(new Date());
+}
 export async function getCategories() {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const rows = await read("cms_categories");
   return rows === null ? [...articleCategories] : rows.map(row => ({ id: text(row, "slug"), label: text(row, "name"), uuid: text(row, "id") })).sort((a,b) => a.label.localeCompare(b.label, "lv"));
 }
 export async function getArticles(): Promise<Article[]> {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const [rows, categories] = await Promise.all([read("cms_articles"), read("cms_categories")]);
   if (rows === null || categories === null) return demoArticles;
   return rows.filter(row => row.published === true && row.published_at).map(row => ({
@@ -41,13 +48,13 @@ export async function getArticles(): Promise<Article[]> {
 }
 export async function getSponsors(): Promise<Sponsor[]> {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const rows = await read("cms_partners");
   return rows === null ? demoSponsors : rows.filter(row => row.published === true).sort((a,b) => Number(a.sort_order)-Number(b.sort_order)).map(row => ({ id: text(row,"id"), label: text(row,"name"), logoSrc: text(row,"image"), beltLogoSrc: text(row,"belt_image"), mainPartner: row.main_partner === true, href: text(row,"url") }));
 }
 export async function getGallery(): Promise<GalleryImage[]> {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const [rows, categories] = await Promise.all([read("cms_gallery"), read("cms_categories")]);
   if (rows === null) return defaultGallery;
   return rows.filter(row => row.published === true)
@@ -59,13 +66,13 @@ export async function getGallery(): Promise<GalleryImage[]> {
 }
 export async function getTeam(): Promise<{ name: string; role: string; email: string; image?: string }[]> {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const rows = await read("cms_team");
   return rows === null ? defaultTeam : rows.filter(row => row.published === true).sort((a,b) => Number(a.sort_order)-Number(b.sort_order)).map(row => ({ name: `${text(row,"first_name")} ${text(row,"last_name")}`, role: text(row,"position"), email: text(row,"email"), image: text(row,"image") }));
 }
 export async function getDocuments() {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const rows = await read("cms_documents");
   return rows === null ? eventDocuments.map(document => ({ ...document, id: document.href, fileType: "PDF" })) : rows.filter(row => row.published === true).sort((a,b) => text(b,"created_at").localeCompare(text(a,"created_at"))).map(row => ({ id: text(row,"id"), title: text(row,"title"), description: text(row,"description"), href: text(row,"url"), fileType: text(row,"file_type"), category: "Dokuments" }));
 }
@@ -79,7 +86,7 @@ export function eventTimestamp(date: string, time: string) {
 }
 export async function getEvents(): Promise<MotorsportEvent[]> {
   "use cache";
-  cacheTag("cms-content"); cacheLife({ stale: 0, revalidate: 60, expire: 300 });
+  cacheTag("cms-content"); cacheLife({ stale: 300, revalidate: 60, expire: 3600 });
   const [rows, links, docs] = await Promise.all([read("cms_events"), read("cms_event_documents"), getDocuments()]);
   if (rows === null || links === null) return demoEvents;
   return rows.filter(row => row.published === true).map(row => {

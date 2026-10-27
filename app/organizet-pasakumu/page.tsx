@@ -62,7 +62,7 @@ export default function EventOrganizationPage() {
         <div className="event-org-container event-org-hero-inner">
           <div className="event-org-hero-bottom">
             <h1 id="event-org-title">
-              Pasākums sākas <span>pirms starta.</span>
+              Pasākums sākas <span>pirms starta</span>
             </h1>
             <div className="event-org-hero-side">
               <p>
@@ -83,7 +83,7 @@ export default function EventOrganizationPage() {
         <div className="event-org-container">
           <div className="event-org-services-intro">
             <h2 id="event-org-services-title">
-              Aiz sacensību dienas ir <span>liels darbs.</span>
+              Aiz sacensību dienas ir <span>liels darbs</span>
             </h2>
             <p>
               Ne katram pasākumam vajadzīgs viens un tas pats. Varat uzticēt mums
@@ -108,7 +108,7 @@ export default function EventOrganizationPage() {
         <div className="event-org-container event-org-brief-grid">
           <div className="event-org-brief-intro">
             <h2 id="event-org-brief-title">
-              Sāksim ar <span>sarunu.</span>
+              Sāksim ar <span>sarunu</span>
             </h2>
             <p>
               Nav jābūt gatavam pilnam pasākuma plānam. Svarīgāk ir saprast,
@@ -131,7 +131,7 @@ export default function EventOrganizationPage() {
         <div className="event-org-container event-org-contact-grid">
           <div className="event-org-contact-intro">
             <h2 id="event-org-contact-title">
-              Pastāstiet par <span>savu pasākumu.</span>
+              Pastāstiet par <span>savu pasākumu</span>
             </h2>
             <p>
               Arī tad, ja vēl tikai apsverat iespējas. Sazinieties tieši, un

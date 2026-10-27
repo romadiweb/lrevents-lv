@@ -9,17 +9,17 @@ import "./biedrs.css";
 const reasons = [
   {
     number: "01",
-    title: "Cilvēki ar kopīgu aizrautību.",
+    title: "Cilvēki ar kopīgu aizrautību",
     description: "Pievienojies cilvēkiem, kuriem autosports ir vairāk nekā tikai sacensību diena.",
   },
   {
     number: "02",
-    title: "Tuvāk notikumu norisei.",
+    title: "Tuvāk notikumu norisei",
     description: "Iepazīsti biedrības darbu, pasākumu sagatavošanu un komandu, kas tos īsteno.",
   },
   {
     number: "03",
-    title: "Iespēja iesaistīties.",
+    title: "Iespēja iesaistīties",
     description: "Pastāsti par savu pieredzi un interesi, lai kopā atrastu piemērotu iesaistes veidu.",
   },
 ];
@@ -77,7 +77,7 @@ export default function MembershipPage() {
     <main id="main-content" className="membership-page site-content-page">
       <section className="member-hero" aria-labelledby="member-title">
         <div className="member-container member-hero-copy">
-          <h1 id="member-title">Kļūsti par <em>savējo.</em></h1>
+          <h1 id="member-title">Kļūsti par <em>savējo</em></h1>
           <div className="member-hero-bottom">
             <p>Autosports sākas ar cilvēkiem. Pievienojies LR Events kopienai un kļūsti par daļu no notikumiem, kas mūs vieno.</p>
             <a className="member-inline-link" href="#pieteiksanas">Aizpildīt pieteikumu <ArrowDownRight size={19} aria-hidden="true" /></a>
@@ -91,7 +91,7 @@ export default function MembershipPage() {
       <section className="member-benefits member-section" aria-labelledby="member-benefits-title">
         <div className="member-container">
           <div className="member-section-intro">
-            <div><h2 id="member-benefits-title">Vairāk nekā <em>dalība.</em></h2><p>Biedrības pamatā ir cilvēki, iniciatīva un vēlme būt tuvāk autosportam.</p></div>
+            <div><h2 id="member-benefits-title">Vairāk nekā <em>dalība</em></h2><p>Biedrības pamatā ir cilvēki, iniciatīva un vēlme būt tuvāk autosportam.</p></div>
           </div>
           <div className="member-reason-grid">
             {reasons.map((reason) => (
@@ -110,7 +110,7 @@ export default function MembershipPage() {
           <div className="member-process-heading">
             <div className="member-process-copy">
               <p className="member-overline member-overline--light">KĀ PIEVIENOTIES</p>
-              <h2 id="member-process-title">Viss sākas ar <em>pieteikumu.</em></h2>
+              <h2 id="member-process-title">Viss sākas ar <em>pieteikumu</em></h2>
             </div>
           </div>
           <ol className="member-process-track" aria-label="Pieteikšanās soļi">
@@ -135,14 +135,14 @@ export default function MembershipPage() {
         <div className="member-container member-application-layout">
           <aside className="member-application-intro">
             <p className="member-overline">PIETEIKŠANĀS</p>
-            <h2 id="member-form-title">Tavs nākamais <em>solis.</em></h2>
+            <h2 id="member-form-title">Tavs nākamais <em>solis</em></h2>
             <p>Aizpildi pieteikumu, lai izteiktu vēlmi kļūt par LR Events biedru. Lauki ar * ir obligāti.</p>
             <div className="member-privacy-note"><ShieldCheck size={19} aria-hidden="true"/><span>Norādītos datus izmanto biedra pieteikuma izskatīšanai. Pirms iesniegšanas iepazīsties ar datu apstrādes informāciju.</span></div>
           </aside>
 
           <div className="member-form-wrap">
             {submission === "success" ? (
-              <div className="member-success" role="status"><Check size={28} aria-hidden="true"/><h3>Pieteikums saņemts.</h3><p>Paldies par interesi kļūt par LR Events biedru! Ar tevi sazināsies par nākamajiem soļiem.</p><button type="button" onClick={() => setSubmission("idle")}>Aizpildīt jaunu pieteikumu <ArrowUpRight size={16}/></button></div>
+              <div className="member-success" role="status"><Check size={28} aria-hidden="true"/><h3>Pieteikums saņemts</h3><p>Paldies par interesi kļūt par LR Events biedru! Ar tevi sazināsies par nākamajiem soļiem.</p><button type="button" onClick={() => setSubmission("idle")}>Aizpildīt jaunu pieteikumu <ArrowUpRight size={16}/></button></div>
             ) : (
               <form className="member-form" onSubmit={handleSubmit}>
                 <fieldset>

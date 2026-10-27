@@ -61,7 +61,7 @@ export default function AboutPage() {
         <div className="about-container about-hero-grid">
           <div className="about-hero-copy">
             <div className="about-kicker"><span className="about-kicker-line" /> SPORTA BIEDRĪBA · LR EVENTS</div>
-            <h1 id="about-title">Mūs vieno <span>autosports.</span></h1>
+            <h1 id="about-title">Mūs vieno <span>autosports</span></h1>
             <p>
               Radām vietu sacensību garam. Organizējam auto, moto un sporta
               pasākumus, kuros līdzās aizrautībai ir pārdomāta un droša norise.
@@ -85,7 +85,7 @@ export default function AboutPage() {
         <div className="about-container about-story-grid">
           <div className="about-section-marker"><span className="about-section-index">01 /</span> MŪSU STĀSTS</div>
           <div className="about-story-body">
-            <h2 id="about-story-title">Vairāk nekā <em>sacensības.</em></h2>
+            <h2 id="about-story-title">Vairāk nekā <em>sacensības</em></h2>
             <div className="about-story-columns">
               <p className="about-lead">
                 LR Events ir sporta biedrība, kas specializējas auto, moto un
@@ -121,7 +121,7 @@ export default function AboutPage() {
           <div className="about-section-heading">
             <div className="about-section-marker"><span className="about-section-index">02 /</span> MŪSU DARBĪBA</div>
             <div>
-              <h2 id="about-activities-title">Ko mēs <em>darām.</em></h2>
+              <h2 id="about-activities-title">Ko mēs <em>darām</em></h2>
               <p>Pasākuma kvalitāti nosaka detaļas, kas strādā kopā.</p>
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function AboutPage() {
         <div className="about-container">
           <div className="about-section-marker about-section-marker--inverse"><span className="about-section-index">03 /</span> MŪSU PIEEJA</div>
           <div className="about-principles-intro">
-            <h2 id="about-principles-title">Labs notikums <em>nerodas nejauši.</em></h2>
+            <h2 id="about-principles-title">Labs notikums <em>nerodas nejauši</em></h2>
             <p>Plānošana, cilvēki un pieredze ir tikpat svarīga kā pati sacensību diena.</p>
           </div>
           <div className="about-principle-list">
@@ -171,7 +171,7 @@ export default function AboutPage() {
       <section className="about-closing about-section" aria-labelledby="about-closing-title">
         <div className="about-container about-closing-grid">
           <div className="about-closing-content">
-            <h2 id="about-closing-title">Autosports sākas <em>ar cilvēkiem.</em></h2>
+            <h2 id="about-closing-title">Autosports sākas <em>ar cilvēkiem</em></h2>
             <p>
               Vēlies iesaistīties LR Events, piedalīties pasākumos vai uzzināt
               vairāk par biedrību? Sper nākamo soli.

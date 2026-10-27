@@ -19,7 +19,7 @@ export function HeroSection({ featuredEvent }: { featuredEvent?: MotorsportEvent
       <div className="home-hero-shade" />
       <div className="container home-hero-grid">
         <div className="hero-introduction">
-          <h1 id="home-hero-title">Sacensību gars. Latvijas ceļi.</h1>
+          <h1 id="home-hero-title">Sacensību gars. Latvijas ceļi!</h1>
           <p>
             LR Events veido autosporta notikumus, kuros precīza organizācija
             satiekas ar īstu sacensību atmosfēru.

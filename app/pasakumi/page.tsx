@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
-import { rigaDate } from "@/lib/events";
-import { getEvents } from "@/lib/cms/content";
+import { getEvents, getTodayInRiga } from "@/lib/cms/content";
 import { EventCard } from "@/components/events/event-card";
 import { EventCalendar } from "@/components/events/event-calendar";
 import "./pasakumi.css";
@@ -14,10 +12,7 @@ export const metadata: Metadata = { title: "Pasākumi — LR Events", descriptio
 type EventsPageProps = { searchParams: Promise<{ skats?: string | string[] }> };
 
 async function EventDirectory({ searchParams }: EventsPageProps) {
-  await connection();
-  const today = rigaDate(new Date());
-  const params = await searchParams;
-  const events = await getEvents();
+  const [today, params, events] = await Promise.all([getTodayInRiga(), searchParams, getEvents()]);
   if (params.skats === "arhivs") redirect("/pasakumi/arhivs");
   const listed = events.filter((event) => (event.endDate ?? event.date) >= today)
     .sort((a, b) => a.date.localeCompare(b.date));
