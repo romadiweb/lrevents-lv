@@ -4,6 +4,7 @@ import { getCmsIdentity } from "@/lib/supabase/auth-server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isCmsSection, sections } from "@/lib/cms/config";
 import { isUuid, validateRecord } from "@/lib/cms/validation";
+import { registrationError } from "@/lib/registration/server";
 
 function fail(message: string, status = 400) { return NextResponse.json({ error: message }, { status }); }
 function databaseMessage(code?: string) {
@@ -53,11 +54,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         const documentIds = record.document_ids;
         delete record.document_ids;
         const { error } = await client.rpc("cms_save_event", { entry: { ...record, ...(id ? { id } : {}) }, document_ids: documentIds });
-        if (error) return fail(databaseMessage(error.code));
+        if (error) return fail(error.message.includes("REG_") ? registrationError(error.message, error.code) : databaseMessage(error.code));
       } else {
         const query = id ? client.from(sections[section].table).update(record).eq("id", id) : client.from(sections[section].table).insert(record);
         const { error } = await query.select("id").single();
-        if (error) return fail(section === "partneri" && error.code === "23505" && record.main_partner ? "Galvenais partneris jau izvēlēts. Vispirms noņem atzīmi iepriekšējam partnerim." : databaseMessage(error.code));
+        if (error) return fail(error.message.includes("REG_") ? registrationError(error.message, error.code) : section === "partneri" && error.code === "23505" && record.main_partner ? "Galvenais partneris jau izvēlēts. Vispirms noņem atzīmi iepriekšējam partnerim." : databaseMessage(error.code));
       }
     }
     revalidateTag("cms-content", { expire: 0 });

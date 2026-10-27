@@ -32,6 +32,7 @@ const preparation = [
 ] as const;
 
 const resources = [
+  { href: "/registracija", title: "Reģistrācija sacensībām", description: "Izvēlies pasākumu, pārbaudi vietu pieejamību un nosūti pieteikumu.", icon: CalendarDays },
   {
     href: "/pasakumi",
     title: "Pasākumu kalendārs",

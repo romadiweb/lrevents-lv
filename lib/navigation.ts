@@ -6,6 +6,7 @@ export type NavItem =
 export const navigation: NavItem[] = [
   { label: "Pasākumi", href: "/pasakumi", children: [
     { label: "Pasākumu kalendārs", href: "/pasakumi" },
+    { label: "Reģistrācija sacensībām", href: "/registracija" },
     { label: "Iepriekšējie pasākumi", href: "/pasakumi/arhivs" },
   ] },
   { label: "Rezultāti", href: "/rezultati", children: [

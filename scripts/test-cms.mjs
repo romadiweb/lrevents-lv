@@ -24,6 +24,9 @@ await db.exec(await readFile(new URL('../supabase/migrations/20261022120523_gall
 await db.exec(await readFile(new URL('../supabase/migrations/20261022123550_partner_belt_logo_field.sql',import.meta.url),'utf8'));
 await db.exec(await readFile(new URL('../supabase/migrations/20261023092435_results_and_cms_settings.sql',import.meta.url),'utf8'));
 await db.exec(await readFile(new URL('../supabase/migrations/20261026102413_optional_historical_round_dates.sql',import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261027113959_event_registration.sql',import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261027120800_registration_integrity_guards.sql',import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261027121059_participant_identity_edit_guard.sql',import.meta.url),'utf8'));
 const owner='11111111-1111-4111-8111-111111111111';
 async function role(name,id='') { await db.exec(`reset role; set role ${name}; select set_config('request.jwt.claim.sub','${id}',false);`); }
 async function count(table) { return Number((await db.query(`select count(*) n from public.${table}`)).rows[0].n); }

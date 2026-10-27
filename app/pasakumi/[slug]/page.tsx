@@ -8,6 +8,9 @@ import { events as demoEvents, formatEventDate } from "@/lib/events";
 import { getEvents, getTodayInRiga } from "@/lib/cms/content";
 import { StandingsSection } from "@/components/home/standings-section";
 import "../pasakumi.css";
+import "../../registracija/registration.css";
+import { getRegistration } from "@/lib/registration/content";
+import { RegistrationPanel } from "@/components/events/registration-panel";
 
 type EventPageProps = { params: Promise<{ slug: string }> };
 export function generateStaticParams() { return demoEvents.map((event) => ({ slug: event.id })); }
@@ -20,7 +23,7 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
 
 async function EventContent({ params }: EventPageProps) {
   const { slug } = await params;
-  const [events, today] = await Promise.all([getEvents(), getTodayInRiga()]);
+  const [events, today, registration] = await Promise.all([getEvents(), getTodayInRiga(), getRegistration(slug)]);
   const event = events.find((item) => item.id === slug);
   if (!event) notFound();
   const hasEnded = (event.endDate ?? event.date) < today;
@@ -33,7 +36,7 @@ async function EventContent({ params }: EventPageProps) {
         <h1>{event.title}</h1>
         <div className="event-detail-hero-meta"><span><MapPin size={17} aria-hidden="true" />{event.city} · {event.venue}</span><span><CalendarDays size={17} aria-hidden="true" /><time dateTime={event.date}>{formatEventDate(event.date)}</time></span></div>
         <div className="event-detail-actions">
-          {hasEnded ? <a href="#norises-vieta" className="primary-button">Pasākuma informācija<ArrowRight size={17} aria-hidden="true" /></a> : event.registrationHref ? <a href={event.registrationHref} className="primary-button">Reģistrēties<ArrowUpRight size={17} aria-hidden="true" /></a> : <a href="#daliba" className="primary-button">Dalībnieku informācija<ArrowRight size={17} aria-hidden="true" /></a>}
+          {registration ? <Link href={registration.state === "open" ? `/pasakumi/${slug}/registracija` : "#dalibnieki"} className="primary-button">{registration.state === "open" ? "Reģistrēties" : "Dalībnieki un reģistrācija"}<ArrowRight size={17} aria-hidden="true" /></Link> : hasEnded ? <a href="#norises-vieta" className="primary-button">Pasākuma informācija<ArrowRight size={17} aria-hidden="true" /></a> : event.registrationHref ? <a href={event.registrationHref} className="primary-button">Reģistrēties<ArrowUpRight size={17} aria-hidden="true" /></a> : <a href="#daliba" className="primary-button">Dalībnieku informācija<ArrowRight size={17} aria-hidden="true" /></a>}
           <a href="#norises-vieta" className="event-detail-secondary">Norises vieta</a>
           <a href="#pasakuma-dokumenti" className="event-detail-secondary">Dokumenti</a>
         </div>
@@ -56,14 +59,15 @@ async function EventContent({ params }: EventPageProps) {
         </section>
         <section className="event-participation" id="daliba" aria-labelledby="event-participation-title"><h2 id="event-participation-title">Dalībniekiem</h2>
           {event.participantDescription && <p style={{ whiteSpace: "pre-line" }}>{event.participantDescription}</p>}
-          <p>{hasEnded ? "Pasākums ir noslēdzies. Reģistrācija vairs nav pieejama." : event.registrationHref ? "Pirms reģistrācijas iepazīsties ar pasākuma nolikumu un dalības nosacījumiem." : "Reģistrācijas saite un dalības nosacījumi tiks publicēti kopā ar pasākuma nolikumu."}</p>
-          {!hasEnded && event.registrationHref ? <a className="event-inline-link" href={event.registrationHref}>Reģistrēties pasākumam<ArrowRight size={17} aria-hidden="true" /></a> : <Link className="event-inline-link" href="/dalibniekiem">Informācija par dalību<ArrowRight size={17} aria-hidden="true" /></Link>}
+          <p>{hasEnded ? "Pasākums ir noslēdzies. Reģistrācija vairs nav pieejama." : registration ? "Reģistrācijas statuss un apstiprināto dalībnieku saraksts pieejams zemāk. Pirms pieteikšanās iepazīsties ar nolikumu." : event.registrationHref ? "Pirms reģistrācijas iepazīsties ar pasākuma nolikumu un dalības nosacījumiem." : "Reģistrācijas saite un dalības nosacījumi tiks publicēti kopā ar pasākuma nolikumu."}</p>
+          {registration ? <a className="event-inline-link" href="#dalibnieki">Reģistrācija un dalībnieki<ArrowRight size={17} aria-hidden="true" /></a> : !hasEnded && event.registrationHref ? <a className="event-inline-link" href={event.registrationHref}>Reģistrēties pasākumam<ArrowRight size={17} aria-hidden="true" /></a> : <Link className="event-inline-link" href="/dalibniekiem">Informācija par dalību<ArrowRight size={17} aria-hidden="true" /></Link>}
         </section>
       </div>
 
       <section className="event-documents" id="pasakuma-dokumenti" aria-labelledby="event-documents-title"><div><h2 id="event-documents-title">Pasākuma dokumenti</h2><Link className="event-inline-link" href="/dokumenti">Visi dokumenti<ArrowRight size={17} aria-hidden="true" /></Link></div>
         {event.documents.length ? <ul>{event.documents.map((document) => <li key={document.href}><a href={document.href}><FileText size={20} aria-hidden="true" /><span>{document.title}</span><ArrowUpRight size={18} aria-hidden="true" /></a></li>)}</ul> : <p>Šī pasākuma nolikums un citi dokumenti vēl nav publicēti.</p>}
       </section>
+      {registration && <RegistrationPanel initial={registration} />}
       <Link className="event-back" href={hasEnded ? "/pasakumi/arhivs" : "/pasakumi"}><ArrowLeft size={18} aria-hidden="true" />{hasEnded ? "Iepriekšējie pasākumi" : "Visi pasākumi"}</Link>
     </div>
     <StandingsSection />

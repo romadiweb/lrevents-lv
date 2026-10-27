@@ -34,4 +34,6 @@ Latvian-language LR Events website presenting motorsport events, participant inf
 
 ## Evidence on Hand
 
+Event registration is implemented per event, with a public registration hub, open/closed/full status, scheduled deadlines in Europe/Riga, a configurable participant limit, and accepted participant lists. CMS opens to an application inbox with a polling notification count, private contact/payment review, and explicit identity matching against the shared participant registry. Acceptance reuses existing season/class entries without creating results or overwriting history. Setup and operational details are in `docs/registration.md`.
+
 The repository contains the LR Events brand, motorsport photographs, local fallback previews, and DESIGN.md. The user supplied article-archive and podium layout references. The Supabase CMS and results schema are implemented; editors supply real competition records, scoring rules, editorial copy and team car assignments. CMS loading uses a local black Romadi mark with an animated surrounding ring; the cached contact page has no separate text-loading placeholder.

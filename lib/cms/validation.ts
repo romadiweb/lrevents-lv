@@ -8,6 +8,7 @@ export function httpUrl(value: string) {
   try { const url = new URL(value); return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password; } catch { return false; }
 }
 export function validateRecord(section: CmsSection, input: Record<string, unknown>) {
+  if (section === "pasakumi") input = { registration_status: "closed", registration_capacity: 80, ...input };
   const result: Record<string, string | number | boolean | string[] | null> = {};
   for (const field of sections[section].fields as CmsField[]) {
     const raw = input[field.key];
@@ -46,6 +47,7 @@ export function validateRecord(section: CmsSection, input: Record<string, unknow
     if (section === "pasakumi" && result.slug === "arhivs") throw Error("Adrese “arhivs” ir rezervēta.");
   }
   if (section !== "lietotaji" && section !== "kategorijas") result.published = input.published === true;
+  if (section === "pasakumi" && (Number(result.registration_capacity) < 1 || Number(result.registration_capacity) > 10000)) throw Error("Norādi dalībnieku limitu no 1 līdz 10000.");
   if (section === "galerija") {
     if (input.image_source !== "upload" && input.image_source !== "url") throw Error("Izvēlies vienu attēla pievienošanas veidu.");
     const image = String(result.image);
